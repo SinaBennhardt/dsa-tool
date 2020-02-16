@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h1>Deine Helden</h1>
+
+    <div class="d-flex flex-wrap">
+
+        <a href="{{ path('create_new_character') }}">
+            <img src="{{ asset("images/add_more.jpg") }}" alt="neuen Helden erstellen" class="rounded-lg">
+            <figcaption class="figure-caption text-right">
+                Neuen Held erstellen.
+            </figcaption>
+        </a>
+
+        {% for playerCharacterInfo in character %}
+
+            {% if user == playerCharacterInfo.user or is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('change_character', {id: playerCharacterInfo.id}) }}">
+                    <img src="{{ asset("images/add_more.jpg") }}" class="rounded-lg">
+                    <figcaption class="figure-caption text-right">
+                        {{ playerCharacterInfo.characterName }}
+                    </figcaption>
+                </a>
+
+
+            {% endif %}
+        {% endfor %}
+
+
+    </div>
+
+{% endblock content %}

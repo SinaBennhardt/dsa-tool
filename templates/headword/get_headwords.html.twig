@@ -1,0 +1,28 @@
+<ul class="nav flex-column" style="background-color: #e0ddcf;">
+    <h2>Schlagwörter</h2>
+
+    {% for every_headword in headwords %}
+        <li class="nav-item">
+            <a href="{{ path('content_sorted_by_headword', {id: every_headword.id}) }}">{{ every_headword.headwordName }}</a>
+        </li>
+    {% endfor %}
+
+    <div><br></div>
+
+    {% if is_granted('ROLE_ADMIN') %}
+
+        <h4>Admin Optionen</h4>
+        <li class="nav-item">
+            <a href="{{ path('change_headword') }}">Schlagwörter Ändern</a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('add_headword') }}">Schlagwörter Hinzufügen</a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('delete_headword') }}">Schlagwörter Löschen</a>
+        </li>
+
+    {% endif %}
+
+
+</ul>

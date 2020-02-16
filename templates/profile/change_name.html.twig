@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h1>Name ändern</h1>
+
+    {{ form_start(changeNameForm) }}
+
+    <div class="form-group">
+        {{ form_label(changeNameForm.name) }}
+        {{ form_widget(changeNameForm.name, {attr: {placeholder: "Dein neuer Name"}}) }}
+    </div>
+
+    <a class="btn btn-secondary" role="button" href="{{ path('home') }}">zurück zur Homepage</a>
+    {{ form_label(changeNameForm.submit) }}
+    {{ form_widget(changeNameForm.submit, {attr: {class:"btn btn-success"}}) }}
+
+    {{ form_end(changeNameForm) }}
+
+{% endblock %}

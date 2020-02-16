@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    {% if is_granted('ROLE_USER') %}
+
+        <h1>Hallo {{ name }}!</h1>
+
+    {% else %}
+        <h1>Hallo Unbekannter User.</h1>
+
+    {% endif %}
+
+    Das hier ist die Homepage. <br>
+
+{% endblock content %}

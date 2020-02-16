@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h1>Dein Profil</h1>
+
+    <div class="font-weight-bold">Dein Name:</div> Platzhalter
+    <div class="font-weight-bold">Deine E-Mail-Adresse:</div> Platzhalter
+    <br> <br>
+    <div>
+
+        <h3>Optionen:</h3>
+        <ul>
+            <li class="nav-item">
+                <a href="{{ path('change_name') }}">Name Ändern</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('change_email') }}">E-Mail Ändern</a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ path('change_password') }}">Passwort Ändern</a>
+            </li>
+
+        </ul>
+    </div>
+
+{% endblock content %}

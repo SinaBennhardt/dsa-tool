@@ -1,0 +1,41 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h1> Schlagwort: {{ headword.headwordName }}</h1>
+    <br>
+
+    {% for content in contents %}
+
+        {% if content.access == 'all' or is_granted('ROLE_ADMIN') or (content.access == 'restricted' and user == content.author) %}
+
+            <h3>{{ content.title }}</h3>
+
+            <small>von {{ content.author.name }} </small>
+            <br>
+
+            {{ content.text }}
+
+            <br>
+            {% if user == content.author or is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('content_sorted_by_headword', {id: content.id}) }}">Bearbeiten</a>
+                <br>
+            {% endif %}
+
+            {% for headword in content.headwords %}
+
+                <a class="badge badge-secondary" href="{{ path('content_sorted_by_headword', {id: headword.id}) }}">
+                    {{ headword.headwordName }}
+                </a>
+
+            {% endfor %}
+
+
+
+        {% endif %}
+
+        <br><br>
+    {% endfor %}
+
+
+{% endblock content %}

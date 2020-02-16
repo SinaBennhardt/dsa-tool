@@ -1,0 +1,101 @@
+<nav class="navbar navbar-expand-lg navbar-light border-bottom border-light" style="background-color: #e0ddcf;" >
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'home' %} active {% endif %}">
+                    <a class="nav-link" href="{{ path('home') }}">Home <span class="sr-only">(current)</span></a>
+                </li>
+
+                {# so wie hier, nochmal raussuchen #}
+
+                <li class="nav-item {% if app.request.attributes.get('_route') == 'view_content' %} active {% endif %}">
+                    <a class="nav-link" href="{{ path('view_content') }}">Bibliothek</a>
+                </li>
+
+                {% if is_granted('ROLE_USER') %}
+                    <li class="nav-item {% if app.request.attributes.get('_route') == 'add_content' %} active {% endif %}">
+                        <a class="nav-link" href="{{ path('add_content') }}">Notizbuch</a>
+                    </li>
+
+                    {% if not is_granted('ROLE_ADMIN')%}
+
+                        <li class="nav-item {% if app.request.attributes.get('_route') == 'character_sheet' %} active {% endif %}">
+                            <a class="nav-link" href="{{ path('character_sheet') }}">Heldendokument</a>
+                        </li>
+
+                    {% endif %}
+
+                    {# noch anpassen! #}
+
+                    <li class="nav-item {% if app.request.attributes.get('_route') == 'all_nsc' %} active {% endif %}">
+                        <a class="nav-link" href="{{ path('all_nsc') }}">NSCs</a>
+                    </li>
+
+                    {# noch anpassen#}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item {% if app.request.attributes.get('_route') == 'character_sheet' %} active {% endif %}">
+                            <a class="nav-link" href="{{ path('character_sheet') }}">Spielerfiguren</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link">Sessionplan</a>
+                        </li>
+
+                    {% endif %}
+
+                    <li class="nav-item {% if app.request.attributes.get('_route') == 'profile_options' %} active {% endif %}">
+                        <a class="nav-link" href="{{ path('profile_options') }}">Profiloptionen</a>
+                    </li>
+
+                    <li class="nav-item {% if app.request.attributes.get('_route') == 'logout' %} active {% endif %}">
+                        <a class="nav-link" href="{{ path('logout') }}">Log out</a>
+                    </li>
+                {% endif %}
+
+                {% if not is_granted('ROLE_USER') %}
+                    <li class="nav-item {% if app.request.attributes.get('_route') == 'login' %} active {% endif %}">
+                        <a class="nav-link" href="{{ path('login') }}">Log in</a>
+                    </li>
+                    <li class="nav-item {% if app.request.attributes.get('_route') == 'registration' %} active {% endif %}">
+                        <a class="nav-link" href="{{ path('registration') }}">Register</a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </div>
+</nav>
+<br>
+
+
+{#bei Registration
+  <li class="nav-item">
+      <a class="nav-link disabled" href="{{ 'add_content' }}">Add Content</a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link disabled" href="{{ 'view_content' }}">View Content</a>
+  </li>
+
+  <li class="nav-item">
+      <a href="{{ 'login' }}">Log in</a>
+  </li>
+
+ {# bei Log In
+  <li class="nav-item">
+      <a class="nav-link disabled" href="{{ 'add_content' }}">Add Content</a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link disabled" href="{{ 'view_content' }}">View Content</a>
+  </li>
+
+  <li class="nav-item">
+      <a href="{{ 'registration' }}">Register</a>
+  </li>
+
+  {# Ansonsten:
+  <li class="nav-item">
+      <a class="nav-link disabled" href="{{ 'add_content' }}">Add Content</a>
+  </li>
+  <li class="nav-item">
+      <a class="nav-link disabled" href="{{ 'view_content' }}">View Content</a>
+  </li>
+    #}

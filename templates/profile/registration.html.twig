@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    {{ form_start(registerForm) }}
+
+        <div class="form-group">
+            {{ form_label(registerForm.name) }}
+            {{ form_widget(registerForm.name) }}
+            <small class="form-text text-muted">Dein Vorname reicht. :)</small>
+            {{ form_errors(registerForm.name) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(registerForm.email) }}
+            {{ form_widget(registerForm.email) }}
+            <small class="form-text text-muted">Du wirst deine Email Adresse später zum Einloggen brauchen.</small>
+            {{ form_errors(registerForm.email) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(registerForm.password.first) }}
+            {{ form_widget(registerForm.password.first)}}
+            {{ form_label(registerForm.password.second) }}
+            {{ form_widget(registerForm.password.second) }}
+
+            {{ form_errors(registerForm.password) }}
+        </div>
+
+    {{ form_label(registerForm.submit) }}
+    {{ form_widget(registerForm.submit, {attr:{class:"btn btn-success"}}) }}
+
+    {{ form_end(registerForm) }}
+
+
+{% endblock %}

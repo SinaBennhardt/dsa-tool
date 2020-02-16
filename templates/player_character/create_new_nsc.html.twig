@@ -1,0 +1,152 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    {{ form_start(addPlayerCharacterForm) }}
+
+    <h1>Neuer NSC</h1>
+
+    <h3>Basisinformationen</h3>
+
+    <div class="container-fluid">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                {{ form_label(addPlayerCharacterForm.characterName) }}
+                {{ form_widget(addPlayerCharacterForm.characterName, {attr: {placeholder: "Name deines Helden"}}) }}
+                {{ form_errors(addPlayerCharacterForm.characterName) }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form_label(addPlayerCharacterForm.race) }}
+                {{ form_widget(addPlayerCharacterForm.race, {attr: {placeholder: "z.B. Tulamide, Nivesin etc."}}) }}
+                {{ form_errors(addPlayerCharacterForm.race) }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form_label(addPlayerCharacterForm.culture) }}
+                {{ form_widget(addPlayerCharacterForm.culture, {attr: {placeholder: "z.B. Mittelländische Städte"}}) }}
+                {{ form_errors(addPlayerCharacterForm.culture) }}
+            </div>
+            <div class="form-group col-md-6">
+                {{ form_label(addPlayerCharacterForm.profession) }}
+                {{ form_widget(addPlayerCharacterForm.profession, {attr: {placeholder: "z.B. Pirat, Söldnerin"}}) }}
+                {{ form_errors(addPlayerCharacterForm.profession) }}
+            </div>
+            <div class="form-groupcol-md-6">
+                {{ form_label(addPlayerCharacterForm.socialStatus) }}
+                <div class="form-row align-items-center">
+                    <div class="col-auto my-1">
+                        {{ form_widget(addPlayerCharacterForm.socialStatus, {attr: {class: "custom-select mr-sm-2"}}) }}
+                        {{ form_errors(addPlayerCharacterForm.socialStatus) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+
+    <h3>Vorteile & Nachteile</h3>
+
+    <div class="container-fluid">
+        <div class="form-row">
+            {{ form_label(addPlayerCharacterForm.advantages) }}
+            {{ form_widget(addPlayerCharacterForm.advantages, {attr: {placeholder: "Gebe hier alle deine Vorteile ein"}}) }}
+            {{ form_errors(addPlayerCharacterForm.advantages) }}
+        </div>
+        <br>
+        <div class="form-row">
+            {{ form_label(addPlayerCharacterForm.disadvantages) }}
+            {{ form_widget(addPlayerCharacterForm.disadvantages, {attr: {placeholder: "Gebe hier alle deine Nachteile ein"}}) }}
+            {{ form_errors(addPlayerCharacterForm.disadvantages) }}
+        </div>
+        <br>
+        <div class="form-row">
+            {{ form_label(addPlayerCharacterForm.uniqueSkills) }}
+            {{ form_widget(addPlayerCharacterForm.uniqueSkills, {attr: {placeholder: "Gebe hier deine Sonderfertigkeiten ein (Keine kämpferischen)"}}) }}
+            {{ form_errors(addPlayerCharacterForm.uniqueSkills) }}
+        </div>
+        <br>
+    </div>
+
+    <h3>Eigenschaften</h3>
+
+    <div class="container-fluid">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                {{ form_label(addPlayerCharacterForm.playerProperty.courage) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.courage, {attr: {min: "0", max: "20"}}) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.courage) }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form_label(addPlayerCharacterForm.playerProperty.intelligence) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.intelligence, {attr: {min: "0", max: "20"}}) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.intelligence) }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form_label(addPlayerCharacterForm.playerProperty.intuition) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.intuition, {attr: {min: "0", max: "20"}}) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.intuition) }}
+            </div>
+
+            <div class="form-group col-md-4">
+                {{ form_label(addPlayerCharacterForm.playerProperty.charisma) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.charisma, {attr: {min: "0", max: "20"}}) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.charisma) }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form_label(addPlayerCharacterForm.playerProperty.fingerDex) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.fingerDex, {attr: {min: "0", max: "20"}}) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.fingerDex) }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form_label(addPlayerCharacterForm.playerProperty.generalDex) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.generalDex, {attr: {min: "0", max: "20"}}) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.generalDex) }}
+            </div>
+
+            <div class="form-group col-md-4">
+                {{ form_label(addPlayerCharacterForm.playerProperty.constitution) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.constitution, {attr: {min: "0", max: "20"}}) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.constitution) }}
+            </div>
+            <div class="form-group col-md-4">
+                {{ form_label(addPlayerCharacterForm.playerProperty.strength) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.strength, {attr: {min: "0", max: "20"}}) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.strength) }}
+            </div>
+        </div>
+    </div>
+
+    <h3><small class="text-muted">(Die folgenden Werte werden automatisch ausgerechnet:)</small></h3>
+
+    <div class="container-fluid">
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                {{ form_label(addPlayerCharacterForm.playerProperty.LP) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.LP) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.LP) }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form_label(addPlayerCharacterForm.playerProperty.MR) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.MR) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.MR) }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form_label(addPlayerCharacterForm.playerProperty.KP) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.KP) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.KP) }}
+            </div>
+            <div class="form-group col-md-3">
+                {{ form_label(addPlayerCharacterForm.playerProperty.AsP) }}
+                {{ form_widget(addPlayerCharacterForm.playerProperty.AsP) }}
+                {{ form_errors(addPlayerCharacterForm.playerProperty.AsP) }}
+            </div>
+
+        </div>
+    </div>
+
+    <a class="btn btn-secondary" role="button" href="{{ path('character_sheet') }}">Abbrechen</a>
+    {{ form_label(addPlayerCharacterForm.submit) }}
+    {{ form_widget(addPlayerCharacterForm.submit, {attr:{class:"btn btn-success"}}) }}
+
+    {{ form_end(addPlayerCharacterForm) }}
+
+{% endblock content %}

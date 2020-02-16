@@ -1,0 +1,2 @@
+
+<p><small class="text-muted">Ich bin ein Footer. Ich brauche noch Content. :) </small>

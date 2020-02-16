@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h1>E-Mail Adresse ändern</h1>
+
+    {{ form_start(changeEmailForm) }}
+
+    <div class="form-group">
+        {{ form_label(changeEmailForm.email) }}
+        {{ form_widget(changeEmailForm.email, {attr: {placeholder: "Deine neue Email"}}) }}
+        {{ form_errors(changeEmailForm.email) }}
+
+    </div>
+
+    <div class="form-group">
+        {{ form_label(changeEmailForm.password) }}
+        {{ form_widget(changeEmailForm.password, {attr: {placeholder: "Dein Passwort"}}) }}
+        {{ form_errors(changeEmailForm.password) }}
+    </div>
+
+    <a class="btn btn-secondary" role="button" href="{{ path('home') }}">zurück zur Homepage</a>
+    {{ form_label(changeEmailForm.submit) }}
+    {{ form_widget(changeEmailForm.submit, {attr: {class:"btn btn-success"}}) }}
+
+    {{ form_end(changeEmailForm) }}
+
+{% endblock %}

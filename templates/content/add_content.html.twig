@@ -1,0 +1,37 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <h1>Inhalt hinzufügen</h1>
+
+    {{ form_start(addContentForm) }}
+
+    <div class="form-group">
+        <h2>{{ form_label(addContentForm.title) }} </h2>
+        {{ form_widget(addContentForm.title, {attr:{size:"90%"}}) }}
+        {{ form_errors(addContentForm.title) }}
+    </div>
+
+    <div class="form-group">
+        <h2>{{ form_label(addContentForm.text) }}</h2>
+        {{ form_widget(addContentForm.text, {attr:{rows:"10", cols:"90%", placeholder: "Schreibe hier deinen Text hin"}}) }}
+        {{ form_errors(addContentForm.text) }}
+    </div>
+
+    <div class="form-group">
+        <h3>{{ form_label(addContentForm.access) }}</h3>
+        {{ form_widget(addContentForm.access) }}
+        {{ form_errors(addContentForm.access) }}
+    </div>
+
+    <div class="form-group">
+        <h3>{{ form_label(addContentForm.headwords) }}</h3>
+        {{ form_widget(addContentForm.headwords) }}
+        {{ form_errors(addContentForm.headwords) }}
+    </div>
+
+    {{ form_label(addContentForm.submit) }}
+    {{ form_widget(addContentForm.submit, {attr:{class:"btn btn-success"}}) }}
+
+    {{ form_end(addContentForm) }}
+
+{% endblock content %}

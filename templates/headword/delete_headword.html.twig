@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h1>Schlagwörter löschen</h1>
+    <h2>Klicke auf ein Schlagwort, um es zu löschen.</h2>
+    <br>
+
+    {{ form_start(deleteHeadwordForm) }}
+
+    {% for headword in deleteHeadwordForm.headwords %}
+        <div class="form-group col-md-8">
+            {{ form_widget(headword) }}
+            {{ form_errors(headword) }}
+
+        </div>
+    {% endfor %}
+
+    {{ form_label(deleteHeadwordForm.submit) }}
+    {{ form_widget(deleteHeadwordForm.submit, {attr: {class: "btn btn-success"}}) }}
+
+    {{ form_end(deleteHeadwordForm) }}
+
+{% endblock %}

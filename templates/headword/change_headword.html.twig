@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h1>Schlagwörter verändern</h1>
+
+    {{ form_start(changeHeadwordForm) }}
+
+    {{ form_label(changeHeadwordForm.headwords) }}
+
+    {% for headword in changeHeadwordForm.headwords %}
+        {{ form_widget(headword) }}
+        {{ form_errors(headword) }}
+    {% endfor %}
+
+    <br> <br>
+    <a class="btn btn-secondary" role="button" href="{{ path('home') }}">Änderungen VERWERFEN</a>
+    {{ form_label(changeHeadwordForm.submit) }}
+    {{ form_widget(changeHeadwordForm.submit, {attr: {class:"btn btn-success"}}) }}
+
+    {{ form_end(changeHeadwordForm) }}
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h1>Die NSCs</h1>
+
+    <div class="d-flex flex-wrap">
+
+        <a href="{{ path('new_nsc') }}">
+            <img src="{{ asset("images/add_more.jpg") }}" alt="neuen NSC erstellen" class="rounded-lg">
+            <figcaption class="figure-caption text-right">
+                Neuen NSC erstellen.
+            </figcaption>
+        </a>
+
+        {% for playerCharacterInfo in character %}
+
+            {% if user == playerCharacterInfo.user or is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('change_character', {id: playerCharacterInfo.id}) }}">
+                    <img src="{{ asset("images/add_more.jpg") }}" class="rounded-lg">
+                    <figcaption class="figure-caption text-right">
+                        {{ playerCharacterInfo.characterName }}
+                    </figcaption>
+                </a>
+
+
+            {% endif %}
+        {% endfor %}
+
+    </div>
+
+{% endblock content %}
