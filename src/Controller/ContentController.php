@@ -96,13 +96,7 @@ class ContentController extends AbstractController
             'id' => $headwordId
         ]);
 
-
-        $builder = $this->entityManager->createQueryBuilder();
-        $builder->select('c');
-        $builder->from(Content::class, 'c');
-        $builder->join('c.headwords', 'h');
-        $builder->where('h.id = :headword');
-        $builder->setParameter('headword', $headwordId);
+        
 
         $contents = $builder->getQuery()->getResult();
 
