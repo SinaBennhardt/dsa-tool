@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ContentController extends AbstractController
@@ -29,12 +30,17 @@ class ContentController extends AbstractController
      * @var ValidatorInterface
      */
     private $validator;
+
+    /**
+     * @var RouterInterface
+     */
     private $router;
 
-    public function __construct(EntityManagerInterface $entityManager, ValidatorInterface $validator)
+    public function __construct(EntityManagerInterface $entityManager, ValidatorInterface $validator, RouterInterface $router)
     {
         $this->entityManager = $entityManager;
         $this->validator = $validator;
+        $this->router = $router;
     }
 
     /**
@@ -42,7 +48,7 @@ class ContentController extends AbstractController
      * @Template()
      * @IsGranted("ROLE_USER")
      * @param Request $request
-     * @return array
+     * @return array|RedirectResponse
      */
     public function addContentAction(Request $request)
     {
@@ -58,6 +64,8 @@ class ContentController extends AbstractController
 
             $this->entityManager->persist($content);
             $this->entityManager->flush();
+
+            return new RedirectResponse($this->router->generate('view_content'));
         }
 
         return ["addContentForm" => $addContentForm->createView()
@@ -96,7 +104,6 @@ class ContentController extends AbstractController
             'id' => $headwordId
         ]);
 
-
         $builder = $this->entityManager->createQueryBuilder();
         $builder->select('c');
         $builder->from(Content::class, 'c');
@@ -111,7 +118,6 @@ class ContentController extends AbstractController
         return ['contents' => $contents,
             'headword' => $headword[0],
             'user' => $user];
-
     }
 
     /**
@@ -119,7 +125,7 @@ class ContentController extends AbstractController
      * @Template()
      * @IsGranted("ROLE_USER")
      * @param Request $request
-     * @return array
+     * @return array|RedirectResponse
      */
     public function changeContentAction(Request $request)
     {
@@ -135,6 +141,8 @@ class ContentController extends AbstractController
 
             $this->entityManager->persist($content);
             $this->entityManager->flush();
+
+            return new RedirectResponse($this->router->generate('view_content'));
 
         }
 

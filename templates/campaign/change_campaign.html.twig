@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    {{ form_start(changeCampaignForm) }}
+
+    <h1>Kampagne: {{ campaign_name }}</h1>
+
+    <div class="form-group">
+        <h2>{{ form_label(changeCampaignForm.title) }}</h2>
+        {{ form_widget(changeCampaignForm.title, {attr:{size:"90%"}}) }}
+        {{ form_errors(changeCampaignForm.title) }}
+    </div>
+
+    <div class="form-group">
+        <h2>{{ form_label(changeCampaignForm.blurb) }}</h2>
+        {{ form_widget(changeCampaignForm.blurb, {attr:{rows:"10", cols:"90%",
+            placeholder: "Schreibe hier deine Zusammenfassung hin"}}) }}
+        {{ form_errors(changeCampaignForm.blurb) }}
+    </div>
+
+    <div class="form-group">
+        <h2>Abenteuer</h2>
+        --Platzhalter--
+        {# for-Schleife für Abenteuer
+        <a class="btn btn-secondary" role="button" href="{{ path('add_adventure') }}">Abenteuer hinzufügen</a>
+        #}
+    </div>
+
+    <div class="form-group">
+        <h2>Helden</h2>
+        --Platzhalter--
+        {# for-Schleife für Helden
+        <a class="btn btn-secondary" role="button" href="{{ path('add_adventure') }}">Held hinzufügen</a>
+        #}
+    </div>
+
+    <a class="btn btn-secondary" role="button" href="{{ path('campaigns') }}">Änderungen VERWERFEN</a>
+    {{ form_label(changeCampaignForm.submit) }}
+    {{ form_widget(changeCampaignForm.submit, {attr:{class:"btn btn-success"}}) }}
+
+
+    {{ form_end(changeCampaignForm) }}
+
+
+{% endblock content %}

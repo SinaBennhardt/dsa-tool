@@ -23,9 +23,6 @@ class DeleteHeadwordType extends AbstractType
             'expanded' => true
         ]);
 
-        $builder->add("submit", SubmitType::class, [
-            'label' => "Löschen"
-        ]);
     }
 
 }

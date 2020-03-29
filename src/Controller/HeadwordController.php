@@ -6,6 +6,7 @@ use App\Entity\Content;
 use App\Entity\Headword;
 use App\Form\AddHeadwordType;
 use App\Form\ChangeHeadwordType;
+use App\Form\DeleteHeadwordConfirmationType;
 use App\Form\DeleteHeadwordType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -21,8 +22,8 @@ class HeadwordController extends AbstractController
 {
 
     /**
- * @var EntityManagerInterface
- */
+     * @var EntityManagerInterface
+     */
     private $entityManager;
     /**
      * @var ValidatorInterface
@@ -49,7 +50,9 @@ class HeadwordController extends AbstractController
     public function changeHeadwordAction(Request $request)
     {
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findAll();
+        $headwords = $repository->findBy([], [
+            'headwordName' => 'ASC'
+        ]);
 
         $changeHeadwordForm = $this->createForm(ChangeHeadwordType::class, [
             'headwords' => $headwords
@@ -90,9 +93,11 @@ class HeadwordController extends AbstractController
         }
 
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findAll();
+        $headwords = $repository->findBy([], [
+            'headwordName' => 'ASC'
+        ]);
 
-        return [ "addHeadwordForm" => $addHeadwordForm->createView(),
+        return ["addHeadwordForm" => $addHeadwordForm->createView(),
             'headwords' => $headwords];
 
     }
@@ -107,31 +112,70 @@ class HeadwordController extends AbstractController
     public function deleteHeadwordAction(Request $request)
     {
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findAll();
-
-        $deleteHeadwordForm = $this->createForm(DeleteHeadwordType::class, [
-            'headwords' => $headwords
+        $headwords = $repository->findBy([], [
+            'headwordName' => 'ASC'
         ]);
-        $deleteHeadwordForm->handleRequest($request);
 
-        if ($deleteHeadwordForm->isSubmitted() && $deleteHeadwordForm->isValid()) {
+        return ['headwords' => $headwords
+        ];
+    }
 
-          dump($headwords);
-          die;
+    /**
+     * @Route("/headword/{id}/delete/", name="delete_headword_confirmation")
+     * @Template()
+     * @param Request $request
+     * @return array|RedirectResponse
+     */
+
+    public function deleteHeadwordConfirmationAction(Request $request)
+    {
+        $headwordId = $request->attributes->get('id');
+
+        $repository = $this->entityManager->getRepository(Headword::class);
+        $headword = $repository->find($headwordId);
+
+        $deleteHeadwordConfirmationForm = $this->createForm(DeleteHeadwordConfirmationType::class);
+        $deleteHeadwordConfirmationForm->handleRequest($request);
+
+
+        if ($deleteHeadwordConfirmationForm->isSubmitted() && $deleteHeadwordConfirmationForm->isValid()) {
+
+            $builder = $this->entityManager->createQueryBuilder();
+            $builder->select('content');
+            $builder->from(Content::class, 'content');
+            $builder->join('content.headwords', 'headword');
+            $builder->where('headword.id = :headword');
+            $builder->setParameter('headword', $headword);
+
+            /** @var Content[] $contentList */
+            $contentList = $builder->getQuery()->getResult();
+
+            foreach ($contentList as $content) {
+                $content->headwords->removeElement($headword);
+            }
+
+            $this->entityManager->remove($headword);
+
+            $this->entityManager->flush();
 
             return new RedirectResponse($this->router->generate('delete_headword'));
         }
 
-        return [ "deleteHeadwordForm" => $deleteHeadwordForm->createView(),
-            'headwords' => $headwords];
+        return ['headword' => $headword,
+            "deleteHeadwordConfirmationForm" => $deleteHeadwordConfirmationForm->createView()
+        ];
     }
+
 
     /**
      * @Template()
      */
-    public function getHeadwords() {
+    public function getHeadwords()
+    {
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findAll();
+        $headwords = $repository->findBy([], [
+            'headwordName' => 'ASC'
+        ]);
 
         return ['headwords' => $headwords];
     }

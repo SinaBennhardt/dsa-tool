@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+        <h3>Möchtest du das Schlagwort <em>"{{ headword.headwordName }}"</em> wirklich löschen?</h3>
+
+        <p>Das Schlagwort wird dabei von allen Beiträgen entfernt. Diese Aktion kann nicht rückgängig gemacht
+            werden.</p>
+
+        {{ form_start(deleteHeadwordConfirmationForm) }}
+
+        <a class="btn btn-light" role="button" href="{{ path('delete_headword') }}">
+            Zurück
+        </a>
+
+        {{  form_label(deleteHeadwordConfirmationForm.submit) }}
+        {{ form_widget(deleteHeadwordConfirmationForm.submit, {attr: {class:"btn btn-danger"}}) }}
+
+        {{ form_end(deleteHeadwordConfirmationForm) }}
+
+
+{% endblock %}

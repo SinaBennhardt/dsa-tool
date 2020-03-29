@@ -29,6 +29,7 @@
         {{ form_errors(addContentForm.headwords) }}
     </div>
 
+    <a class="btn btn-secondary" role="button" href="{{ path('home') }}">Änderungen VERWERFEN</a>
     {{ form_label(addContentForm.submit) }}
     {{ form_widget(addContentForm.submit, {attr:{class:"btn btn-success"}}) }}
 
