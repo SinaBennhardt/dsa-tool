@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h1>Meine Kampagnen</h1>
+
+    {% for campaign in campaigns %}
+
+        <h3>{{ campaign.title }}</h3>
+
+        <small>von {{ campaign.author.name }} </small>
+        <br>
+
+        {{ campaign.blurb }} <br>
+
+        <a href="{{ path('change_campaign', {id: campaign.id}) }}">Bearbeiten</a>
+
+        <br><br>
+
+    {% endfor %}
+
+    <figure class="figure">
+        <a href="{{ path('add_campaigns') }}">
+            <img src="{{ asset("images/add_more.jpg") }}" alt="neue Kampagne erstellen" class="rounded-lg">
+            <figcaption class="figure-caption text-right">
+                Neue Kampagne erstellen.
+            </figcaption>
+        </a>
+    </figure>
+
+{% endblock content %}

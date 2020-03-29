@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity()
  */
-class Content
+class Adventure
 {
     /**
      * @ORM\Id()
@@ -18,7 +18,6 @@ class Content
      * @ORM\GeneratedValue()
      */
     public $id;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
@@ -29,38 +28,22 @@ class Content
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
-    public $title;
-
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    public $text;
-
+    public $name;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $access;
-
-
-    /**
-     * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Headword", inversedBy="contents")
-     */
-    public $headwords;
+    public $blurb;
 
     /**
-     * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Adventure", inversedBy="contents")
+     * @ORM\ManyToOne(targetEntity="Campaign", inversedBy="adventures")
+     *
      */
-    public $attachedAdventure;
+    public $campaign;
 
-    public function __constructor()
-    {
-        $this->headwords = new ArrayCollection();
-        $this->attachedAdventure = new ArrayCollection();
-    }
-
-
+    /**
+     * @ORM\ManyToMany(targetEntity="Content", mappedBy="attachedAdventure")
+     *
+     */
+    public $contents;
 }
