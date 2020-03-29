@@ -11,55 +11,102 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class User implements UserInterface
 {
+    const ROLE_USER = 'user';
+    const ROLE_ADMIN = 'admin';
+
     /**
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue()
-     *
      */
-   public $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
-    public $name;
+    private $name;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      * @Assert\Email()
      */
-    public $email;
+    private $email;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
-    public $password;
+    private $password;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $role;
+    private $role;
 
     /**
-     * Returns the roles granted to the user.
-     *
-     *     public function getRoles()
-     *     {
-     *         return ['ROLE_USER'];
-     *     }
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return string[] The user roles
+     * @return int
      */
-    public function getRoles()
+    public function getId()
     {
-        if ($this->role === 'admin') {
+        return $this->id;
+    }
+
+    /**
+     * @param $name string
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param string $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRoles(): array
+    {
+        if ($this->role === self::ROLE_ADMIN) {
             return [
                 'ROLE_USER',
                 'ROLE_ADMIN'
@@ -72,12 +119,15 @@ class User implements UserInterface
     }
 
     /**
-     * Returns the password used to authenticate the user.
-     *
-     * This should be the encoded password. On authentication, a plain-text
-     * password will be salted, encoded, and then compared to this value.
-     *
-     * @return string|null The encoded password if any
+     * @param string $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return string
      */
     public function getPassword()
     {
@@ -85,11 +135,7 @@ class User implements UserInterface
     }
 
     /**
-     * Returns the salt that was originally used to encode the password.
-     *
-     * This can return null if the password was not encoded using a salt.
-     *
-     * @return string|null The salt
+     * @return string|null
      */
     public function getSalt()
     {
@@ -97,23 +143,15 @@ class User implements UserInterface
     }
 
     /**
-     * Returns the username used to authenticate the user.
-     *
-     * @return string The username
+     * @return string
      */
     public function getUsername()
     {
         return $this->email;
     }
 
-    /**
-     * Removes sensitive data from the user.
-     *
-     * This is important if, at any given point, sensitive information like
-     * the plain-text password is stored on this object.
-     */
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
+        // do nothing
     }
 }
