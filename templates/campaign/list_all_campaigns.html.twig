@@ -5,16 +5,22 @@
     <h1>Meine Kampagnen</h1>
 
     {% for campaign in campaigns %}
+        <div class="row">
+            <div class="col col-lg-2">
+                <a href="{{ path('change_campaign', {id: campaign.id}) }}">
+                    <img src="{{ asset("images/add_more.jpg") }}" alt="Kampagne beaarbeiten" class="img-fluid rounded-lg" >
+                </a>
+            </div>
+            <div class="col col-lg-10">
+                <h3>{{ campaign.title }}</h3>
+                <small>von {{ campaign.author.name }} </small>
+                <br>
 
-        <h3>{{ campaign.title }}</h3>
+                {{ campaign.blurb }} <br>
 
-        <small>von {{ campaign.author.name }} </small>
-        <br>
-
-        {{ campaign.blurb }} <br>
-
-        <a href="{{ path('change_campaign', {id: campaign.id}) }}">Bearbeiten</a>
-
+                <a href="{{ path('change_campaign', {id: campaign.id}) }}">Bearbeiten</a>
+            </div>
+        </div>
         <br><br>
 
     {% endfor %}
