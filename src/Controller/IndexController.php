@@ -36,7 +36,7 @@ class IndexController extends AbstractController
 
         if ($user !== null) {
 
-        $name = $user->name;
+        $name = $user->getName();
 
         return ['name' => $name];
         }

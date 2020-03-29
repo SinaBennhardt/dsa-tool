@@ -47,8 +47,7 @@ class ProfileController extends AbstractController
      * @Route("/logout", name="logout")
      * @Template()
      */
-    public
-    function logoutAction()
+    public function logoutAction()
     {
 
     }
@@ -57,8 +56,7 @@ class ProfileController extends AbstractController
      * @Route("/login", name="login")
      * @Template()
      */
-    public
-    function loginAction()
+    public function loginAction()
     {
 
     }
@@ -70,8 +68,7 @@ class ProfileController extends AbstractController
      * @return array
      */
 
-    public
-    function profileOptionsAction(Request $request)
+    public function profileOptionsAction(Request $request)
     {
 
         return [];
@@ -83,26 +80,24 @@ class ProfileController extends AbstractController
      * @param Request $request
      * @return array
      */
-    public
-    function registrationAction(Request $request)
+    public function registrationAction(Request $request)
     {
-        $user = new User;
+        $user = new User();
         $registerForm = $this->createForm(RegisterType::class, $user);
         $registerForm->handleRequest($request);
 
         if ($registerForm->isSubmitted() && $registerForm->isValid()) {
 
-            $user->role = "user";                                   //noch besser machen irgendwie?
+            $user->setRole(User::ROLE_USER);
 
-            $password = $this->encoder->encodePassword($user, $user->password);
-            $user->password = $password;
+            $password = $this->encoder->encodePassword($user, $user->getPassword());
+            $user->setPassword($password);
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-
         }
-        return ["registerForm" => $registerForm->createView()];
 
+        return ["registerForm" => $registerForm->createView()];
     }
 
 
@@ -112,9 +107,7 @@ class ProfileController extends AbstractController
      * @param Request $request
      * @return array
      */
-
-    public
-    function changeNameAction(Request $request)
+    public function changeNameAction(Request $request)
     {
         $user = $this->getUser();
 
@@ -124,7 +117,7 @@ class ProfileController extends AbstractController
         if ($changeNameForm->isSubmitted() && $changeNameForm->isValid()) {
 
             $data = $changeNameForm->getData();
-            $user->name = $data["name"];
+            $user->setName($data["name"]);
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
@@ -140,8 +133,7 @@ class ProfileController extends AbstractController
      * @param Request $request
      * @return array
      */
-    public
-    function changeEmailAction(Request $request)
+    public function changeEmailAction(Request $request)
     {
         $changeEmailForm = $this->createForm(ChangeEmailType::class, []);
         $changeEmailForm->handleRequest($request);
@@ -165,8 +157,7 @@ class ProfileController extends AbstractController
      * @param Request $request
      * @return array
      */
-    public
-    function changePasswordAction(Request $request)
+    public function changePasswordAction(Request $request)
     {
         $user = $this->getUser();
 
@@ -178,7 +169,7 @@ class ProfileController extends AbstractController
             $data = $changePasswordForm->getData();
 
             $password = $this->encoder->encodePassword($user, $data["password"]);
-            $user->password = $password;
+            $user->setPassword($password);
 
             $user = $this->getUser();
             $this->entityManager->persist($user);
@@ -188,5 +179,4 @@ class ProfileController extends AbstractController
         ];
 
     }
-
 }
