@@ -36,7 +36,7 @@ class Adventure
     public $blurb;
 
     /**
-     * * @ORM\ManyToOne(targetEntity="Campaign", inversedBy="adventures")
+     * @ORM\ManyToOne(targetEntity="Campaign", inversedBy="adventures")
      *
      */
     public $campaign;
