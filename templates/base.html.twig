@@ -28,6 +28,15 @@
             leer
         </div>
         <div class="col col-lg-8" style="background-color: #e0ddcf;">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
             {% block content %}
                <h1>Die Seite, auf die du zugreifen möchtest, existiert noch nicht.</h1>
             {% endblock %}

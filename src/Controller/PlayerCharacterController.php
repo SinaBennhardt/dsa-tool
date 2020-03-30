@@ -66,7 +66,7 @@ class PlayerCharacterController extends AbstractController
      * @Template()
      * @IsGranted("ROLE_USER")
      * @param Request $request
-     * @return array
+     * @return array|Response
      */
     public function CreateNewCharacterAction(Request $request)
     {
@@ -85,11 +85,13 @@ class PlayerCharacterController extends AbstractController
             $this->entityManager->persist($characterInfo);
             $this->entityManager->persist($characterProperties);
             $this->entityManager->flush();
+
+            $this->addFlash('success', 'Charakter wurde erfolgreich erstellt.');
+
+            return $this->redirectToRoute('character_sheet');
         }
 
-
-        return ["addPlayerCharacterForm" => $addPlayerCharacterForm->createView(),
-        ];
+        return ["addPlayerCharacterForm" => $addPlayerCharacterForm->createView()];
     }
 
     /**
