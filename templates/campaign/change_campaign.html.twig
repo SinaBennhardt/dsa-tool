@@ -3,8 +3,16 @@
 {% block content %}
 
     {{ form_start(changeCampaignForm) }}
-
-    <h1>Kampagne: {{ campaign_name }}</h1>
+    <div class="form-group">
+        <div class="row">
+            <div class="col col-lg-10">
+                <h1>Kampagne: {{ campaign_name }}</h1>
+            </div>
+            <div class="col col-lg-2">
+                <a class="btn btn-secondary float-right" role="button" href="{{ path('campaigns') }}">Zurück</a>
+            </div>
+        </div>
+    </div>
 
     <div class="form-group">
         <h2>{{ form_label(changeCampaignForm.title) }}</h2>
@@ -20,16 +28,26 @@
     </div>
 
     <div class="form-group">
+        <a class="btn btn-secondary" role="button" href="{{ path('campaigns') }}">Änderungen VERWERFEN</a>
+        {{ form_label(changeCampaignForm.submit) }}
+        {{ form_widget(changeCampaignForm.submit, {attr:{class:"btn btn-success"}}) }}
+    </div>
+
+
+    <div class="form-group">
         <h2>Abenteuer</h2>
 
         {% for adventure in adventures %}
-            <div class="row">
-                <div class="col col-lg-2">
-                    <a class="btn btn-secondary" role="button" href="{{ path('home') }}">Bearbeiten</a>
-                </div>
-                <div class="col col-lg-10">
-                    <h3>{{ adventure.title }}</h3>
-                    {{ adventure.blurb }}
+            <div class="form-group">
+                <div class="row">
+                    <div class="col col-lg-2">
+                        <a class="btn btn-secondary" role="button"
+                           href="{{ path('change_adventures', {campaignId: campaign_id, adventureId: adventure.id}) }}">Bearbeiten</a>
+                    </div>
+                    <div class="col col-lg-10">
+                        <h3>{{ adventure.title }}</h3>
+                        {{ adventure.blurb }}
+                    </div>
                 </div>
             </div>
         {% endfor %}
@@ -46,11 +64,7 @@
         #}
     </div>
 
-    <a class="btn btn-secondary" role="button" href="{{ path('campaigns') }}">Änderungen VERWERFEN</a>
-    {{ form_label(changeCampaignForm.submit) }}
-    {{ form_widget(changeCampaignForm.submit, {attr:{class:"btn btn-success"}}) }}
-
-
+    <a class="btn btn-secondary float-right" role="button" href="{{ path('campaigns') }}">Zurück</a>
     {{ form_end(changeCampaignForm) }}
 
 

@@ -151,7 +151,7 @@ class HeadwordController extends AbstractController
             $contentList = $builder->getQuery()->getResult();
 
             foreach ($contentList as $content) {
-                $content->headwords->removeElement($headword);
+                $content->getHeadwords()->removeElement($headword);
             }
 
             $this->entityManager->remove($headword);

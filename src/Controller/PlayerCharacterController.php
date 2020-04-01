@@ -74,8 +74,8 @@ class PlayerCharacterController extends AbstractController
         $characterInfo = new PlayerCharacterInfo();
         $characterProperties = new PlayerProperties();
 
-        $characterInfo->playerProperty = $characterProperties;
-        $characterInfo->user = $user;
+        $characterInfo->setPlayerProperty($characterProperties);
+        $characterInfo->setUser($user);
 
         $addPlayerCharacterForm = $this->createForm(PlayerCharacterType::class, $characterInfo);
         $addPlayerCharacterForm->handleRequest($request);
@@ -86,7 +86,6 @@ class PlayerCharacterController extends AbstractController
             $this->entityManager->persist($characterProperties);
             $this->entityManager->flush();
         }
-
 
         return ["addPlayerCharacterForm" => $addPlayerCharacterForm->createView(),
         ];
@@ -162,15 +161,15 @@ class PlayerCharacterController extends AbstractController
         $characterInfo = new PlayerCharacterInfo();
         $characterProperties = new PlayerProperties();
 
-        $characterInfo->playerProperty = $characterProperties;
-        $characterInfo->user = $user;
+        $characterInfo->setPlayerProperty($characterProperties);
+        $characterInfo->setUser($user);
 
         $addPlayerCharacterForm = $this->createForm(PlayerCharacterType::class, $characterInfo);
         $addPlayerCharacterForm->handleRequest($request);
 
         if ($addPlayerCharacterForm->isSubmitted() && $addPlayerCharacterForm->isValid()) {
 
-            $characterInfo->playerType = 'NSC';
+            $characterInfo->setPlayerType('NSC');
             $this->entityManager->persist($characterInfo);
             $this->entityManager->persist($characterProperties);
             $this->entityManager->flush();

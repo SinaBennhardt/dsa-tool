@@ -77,12 +77,12 @@ class CampaignController extends AbstractController
         if ($addCampaignForm->isSubmitted() && $addCampaignForm->isValid()){
 
             $user = $this->getUser();
-            $campaign->author = $user;
+            $campaign->setAuthor($user);
 
             $this->entityManager->persist($campaign);
             $this->entityManager->flush();
 
-            return new RedirectResponse($this->router->generate('change_campaign', ['id' => $campaign->id]));
+            return new RedirectResponse($this->router->generate('change_campaign', ['id' => $campaign->getId()]));
         }
 
         return ["addCampaignForm" => $addCampaignForm->createView()];
@@ -93,7 +93,7 @@ class CampaignController extends AbstractController
      * @Template()
      * @IsGranted("ROLE_ADMIN")
      * @param Request $request
-     * @return array
+     * @return array|RedirectResponse
      */
     public function changeCampaignAction(Request $request) {
 
@@ -112,10 +112,18 @@ class CampaignController extends AbstractController
         $changeCampaignForm = $this->createForm(ChangeCampaignType::class, $campaign);
         $changeCampaignForm->handleRequest($request);
 
+        if ($changeCampaignForm->isSubmitted() && $changeCampaignForm->isValid()) {
+
+            $this->entityManager->persist($campaign);
+            $this->entityManager->flush();
+
+            return new RedirectResponse($this->router->generate('change_campaign', ['id' => $campaign->getId()]));
+        }
+
         return [
             'changeCampaignForm' => $changeCampaignForm->createView(),
-            'campaign_name' => $campaign->title,
-            'campaign_id' => $campaign->id,
+            'campaign_name' => $campaign->getTitle(),
+            'campaign_id' => $campaign->getId(),
             'adventures' => $adventures
         ];
 
