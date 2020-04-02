@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Adventure;
 use App\Entity\Campaign;
 use App\Form\AddCampaignType;
 use App\Form\ChangeCampaignType;
@@ -100,11 +101,23 @@ class CampaignController extends AbstractController
         $id = $request->attributes->get('id');
         $campaign = $repository->find($id);
 
+        $repository = $this->entityManager->getRepository(Adventure::class);
+
+        /** @var Adventure[] $adventures */
+        $adventures = $repository->findBy( [
+                'campaign' => $campaign
+            ]
+        );
+
         $changeCampaignForm = $this->createForm(ChangeCampaignType::class, $campaign);
         $changeCampaignForm->handleRequest($request);
 
-        return [ 'changeCampaignForm' => $changeCampaignForm->createView(),
-            'campaign_name' => $campaign->title];
+        return [
+            'changeCampaignForm' => $changeCampaignForm->createView(),
+            'campaign_name' => $campaign->title,
+            'campaign_id' => $campaign->id,
+            'adventures' => $adventures
+        ];
 
     }
 }

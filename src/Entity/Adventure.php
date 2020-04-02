@@ -28,7 +28,7 @@ class Adventure
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
-    public $name;
+    public $title;
 
     /**
      * @ORM\Column(type="string")
