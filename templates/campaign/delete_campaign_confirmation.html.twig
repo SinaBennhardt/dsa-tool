@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h3>Möchtest du die Kampagne <em>"{{ campaign.title }}"</em> wirklich löschen?</h3>
+
+    <p>Dabei werden auch alle in der Kampagne enthaltenden ABENTEUER gelöscht! Diese Aktion kann nicht rückgängig gemacht
+        werden.</p>
+
+    {{ form_start(deleteCampaignConfirmationForm) }}
+
+    <a class="btn btn-light" role="button" href="{{ path('change_campaign', {id: id}) }}">
+        Zurück
+    </a>
+
+    {{  form_label(deleteCampaignConfirmationForm.submit) }}
+    {{ form_widget(deleteCampaignConfirmationForm.submit, {attr: {class:"btn btn-danger"}}) }}
+
+    {{ form_end(deleteCampaignConfirmationForm) }}
+
+
+{% endblock content %}
