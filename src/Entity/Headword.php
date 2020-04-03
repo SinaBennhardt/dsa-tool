@@ -64,7 +64,7 @@ class Headword
         return $this->contents;
     }
 
-    public function __constructor()
+    public function __construct()
     {
         $this->contents = new ArrayCollection();
     }

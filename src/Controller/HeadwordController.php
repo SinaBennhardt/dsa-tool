@@ -59,12 +59,10 @@ class HeadwordController extends AbstractController
         ]);
         $changeHeadwordForm->handleRequest($request);
 
-
         if ($changeHeadwordForm->isSubmitted() && $changeHeadwordForm->isValid()) {
 
             $this->entityManager->flush();
             return new RedirectResponse($this->router->generate('change_headword'));
-
         }
 
         return ['headwords' => $headwords,
@@ -155,6 +153,9 @@ class HeadwordController extends AbstractController
             }
 
             $this->entityManager->remove($headword);
+
+            $this->addFlash('success',
+                sprintf('Du hast das Schlagwort "%s" erfolgreich gelöscht.', $headword->getHeadwordName()));
 
             $this->entityManager->flush();
 

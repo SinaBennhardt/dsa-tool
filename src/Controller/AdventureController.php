@@ -67,6 +67,9 @@ class AdventureController extends AbstractController
             $this->entityManager->persist($adventure);
             $this->entityManager->flush();
 
+            $this->addFlash('success',
+                sprintf('Das Abenteuer "%s" wurde erfolgreich erstellt.', $adventure->getTitle()));
+
             return new RedirectResponse($this->router->generate('change_campaign', ['id' => $id]));
         }
 
@@ -98,6 +101,9 @@ class AdventureController extends AbstractController
 
             $this->entityManager->persist($adventure);
             $this->entityManager->flush();
+
+            $this->addFlash('success',
+                sprintf('Das Abenteuer "%s" wurde angepasst.', $adventure->getTitle()));
 
             return new RedirectResponse($this->router->generate('change_campaign', ['id' => $campaignId]));
         }
@@ -140,7 +146,7 @@ class AdventureController extends AbstractController
      * @return array|RedirectResponse
      */
 
-    public function deleteHeadwordConfirmationAction(Request $request, $id, $adventureId)
+    public function deleteAdventureConfirmationAction(Request $request, $id, $adventureId)
     {
         $repository = $this->entityManager->getRepository(Adventure::class);
         $adventure = $repository->find($adventureId);
@@ -152,6 +158,9 @@ class AdventureController extends AbstractController
 
             $this->entityManager->remove($adventure);
             $this->entityManager->flush();
+
+            $this->addFlash('success',
+                sprintf('Das Abenteuer "%s" wurde erfolgreich gelöscht.', $adventure->getTitle()));
 
             return new RedirectResponse($this->router->generate('delete_adventure', ['id' => $id]));
         }

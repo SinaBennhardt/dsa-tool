@@ -56,7 +56,7 @@ class Content
      */
     private $attachedAdventure;
 
-    public function __constructor()
+    public function __construct()
     {
         $this->headwords = new ArrayCollection();
         $this->attachedAdventure = new ArrayCollection();

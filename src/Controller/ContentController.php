@@ -52,7 +52,7 @@ class ContentController extends AbstractController
      */
     public function addContentAction(Request $request)
     {
-        $content = new Content;
+        $content = new Content();
 
         $addContentForm = $this->createForm(AddContentType::class, $content);
         $addContentForm->handleRequest($request);
@@ -138,6 +138,9 @@ class ContentController extends AbstractController
 
 
         if ($changeContentForm->isSubmitted() && $changeContentForm->isValid()) {
+
+            $this->addFlash('success',
+                sprintf('Du hast dein Eintrag "%s" geändert.', $content->getTitle()));
 
             $this->entityManager->persist($content);
             $this->entityManager->flush();
