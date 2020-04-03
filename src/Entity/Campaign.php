@@ -110,7 +110,7 @@ class Campaign
     }
 
 
-    public function __constructor()
+    public function __construct()
     {
         $this->adventures = new ArrayCollection();
     }

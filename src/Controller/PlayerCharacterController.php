@@ -55,6 +55,7 @@ class PlayerCharacterController extends AbstractController
             ['playerType' => 'Held']
         );
 
+        dump($character);
 
         return ["character" => $character,
             "user" => $user];
@@ -86,7 +87,8 @@ class PlayerCharacterController extends AbstractController
             $this->entityManager->persist($characterProperties);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Charakter wurde erfolgreich erstellt.');
+            $this->addFlash('success',
+                sprintf('Dein Held "%s" wurde erfolgreich erstellt.', $characterInfo->getCharacterName()));
 
             return $this->redirectToRoute('character_sheet');
         }
@@ -104,8 +106,6 @@ class PlayerCharacterController extends AbstractController
 
     public function ChangeCharacterAction(Request $request)
     {
-
-        $user = $this->getUser();
         $repository = $this->entityManager->getRepository(PlayerCharacterInfo::class);
         $id = $request->attributes->get('id');
         $characterInfo = $repository->find($id);
@@ -115,8 +115,10 @@ class PlayerCharacterController extends AbstractController
 
         if ($addPlayerCharacterForm->isSubmitted() && $addPlayerCharacterForm->isValid()) {
 
+            $this->addFlash('success',
+                sprintf('Dein Held "%s" wurde angepasst.', $characterInfo->getCharacterName()));
+
             $this->entityManager->persist($characterInfo);
-            //$this->entityManager->persist($characterProperties);
             $this->entityManager->flush();
         }
 
@@ -141,9 +143,7 @@ class PlayerCharacterController extends AbstractController
             [
                 'playerType' => 'NSC'
             ]
-
         );
-
 
         return ["character" => $character,
             "user" => $user];
@@ -173,6 +173,10 @@ class PlayerCharacterController extends AbstractController
         if ($addPlayerCharacterForm->isSubmitted() && $addPlayerCharacterForm->isValid()) {
 
             $characterInfo->setPlayerType('NSC');
+
+            $this->addFlash('success',
+                sprintf('Der NSC "%s" wurde erfolgreich erstellt.', $characterInfo->getCharacterName()));
+
             $this->entityManager->persist($characterInfo);
             $this->entityManager->persist($characterProperties);
             $this->entityManager->flush();

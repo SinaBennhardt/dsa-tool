@@ -17,15 +17,15 @@
 <div class="container-fluid">
     <div class="row" style="background-color: #e0ddcf;">
         <div class="col col-lg-2" style="background-color: #474448;"></div>
-        <div class="col col-lg-8" >
+        <div class="col col-lg-8">
             {% include 'navigation.html.twig' %}
         </div>
-        <div class="col col-lg-2" ></div>
+        <div class="col col-lg-2"></div>
     </div>
 
     <div class="row">
-        <div class="col col-lg-2"  style="background-color: #474448;">
-            leer
+        <div class="col col-lg-2" style="background-color: #474448;">
+            - linkes Menü -
         </div>
         <div class="col col-lg-8" style="background-color: #e0ddcf;">
             {% for message in app.flashes('success') %}
@@ -38,7 +38,7 @@
             {% endfor %}
 
             {% block content %}
-               <h1>Die Seite, auf die du zugreifen möchtest, existiert noch nicht.</h1>
+                <h1>Die Seite, auf die du zugreifen möchtest, existiert noch nicht.</h1>
             {% endblock %}
         </div>
         <div class="col col-lg-2" style="background-color: #e0ddcf;">
@@ -52,9 +52,9 @@
     <div class="row">
         <div class="col col-lg-12" style="background-color: #e0ddcf;">
             {% include 'footer.html.twig' %}
+        </div>
     </div>
 </div>
-
 </body>
 </html>
 

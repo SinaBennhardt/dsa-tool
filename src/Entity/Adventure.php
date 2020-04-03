@@ -47,7 +47,7 @@ class Adventure
      */
     private $contents;
 
-    public function __constructor()
+    public function __construct()
     {
         $this->contents = new ArrayCollection();
     }

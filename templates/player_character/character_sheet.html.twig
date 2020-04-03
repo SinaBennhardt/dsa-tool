@@ -7,7 +7,6 @@
     <div class="d-flex flex-wrap">
 
         {% for playerCharacterInfo in character %}
-
             {% if user == playerCharacterInfo.user or is_granted('ROLE_ADMIN') %}
                 <figure class="figure">
                     <a href="{{ path('change_character', {id: playerCharacterInfo.id}) }}">

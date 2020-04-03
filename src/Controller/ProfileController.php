@@ -93,6 +93,9 @@ class ProfileController extends AbstractController
             $password = $this->encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
+            $this->addFlash('success',
+                sprintf('Du hast dich erfolgreich registriert.'));
+
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }
@@ -119,6 +122,9 @@ class ProfileController extends AbstractController
             $data = $changeNameForm->getData();
             $user->setName($data["name"]);
 
+            $this->addFlash('success',
+                sprintf('Du hast deinen Namen zu "%s" geändert.', $user->getName()));
+
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
@@ -139,11 +145,13 @@ class ProfileController extends AbstractController
         $changeEmailForm->handleRequest($request);
 
         if ($changeEmailForm->isSubmitted() && $changeEmailForm->isValid()) {
-
             $user = $this->getUser();
+
+            $this->addFlash('success',
+                sprintf('Du hast deine Email zu "%s" geändert.', $user->getEmail()));
+
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-
         }
 
         return ["changeEmailForm" => $changeEmailForm->createView()];
@@ -170,8 +178,11 @@ class ProfileController extends AbstractController
 
             $password = $this->encoder->encodePassword($user, $data["password"]);
             $user->setPassword($password);
-
             $user = $this->getUser();
+
+            $this->addFlash('success',
+                sprintf('Du hast dein Passwort geändert.'));
+
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }

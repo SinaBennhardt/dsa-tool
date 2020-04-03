@@ -80,6 +80,9 @@ class CampaignController extends AbstractController
             $user = $this->getUser();
             $campaign->setAuthor($user);
 
+            $this->addFlash('success',
+                sprintf('Die Kampagne "%s" wurde erfolgreich erstellt.', $campaign->getTitle()));
+
             $this->entityManager->persist($campaign);
             $this->entityManager->flush();
 
@@ -114,6 +117,9 @@ class CampaignController extends AbstractController
         $changeCampaignForm->handleRequest($request);
 
         if ($changeCampaignForm->isSubmitted() && $changeCampaignForm->isValid()) {
+
+            $this->addFlash('success',
+                sprintf('Du hast die Kampagne "%s" angepasst.', $campaign->getTitle()));
 
             $this->entityManager->persist($campaign);
             $this->entityManager->flush();
@@ -155,6 +161,9 @@ class CampaignController extends AbstractController
             foreach ($adventureList as $adventure) {
                 $this->entityManager->remove($adventure);
             }
+
+            $this->addFlash('success',
+                sprintf('Du hast die Kampagne "%s" erfolgreich gelöscht.', $campaign->getTitle()));
 
             $this->entityManager->remove($campaign);
             $this->entityManager->flush();
