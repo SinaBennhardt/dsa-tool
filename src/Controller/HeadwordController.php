@@ -104,11 +104,11 @@ class HeadwordController extends AbstractController
 
 
     /**
-     * @Route("/headword/delete", name="delete_headword")
-     * @Template()
-     * @param Request $request
-     * @return array|RedirectResponse
-     */
+ * @Route("/headword/delete", name="delete_headword")
+ * @Template()
+ * @param Request $request
+ * @return array|RedirectResponse
+ */
     public function deleteHeadwordAction(Request $request)
     {
         $repository = $this->entityManager->getRepository(Headword::class);

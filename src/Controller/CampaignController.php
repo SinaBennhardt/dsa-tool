@@ -7,6 +7,7 @@ use App\Entity\Adventure;
 use App\Entity\Campaign;
 use App\Form\AddCampaignType;
 use App\Form\ChangeCampaignType;
+use App\Form\DeleteCampaignConfirmationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -93,12 +94,12 @@ class CampaignController extends AbstractController
      * @Template()
      * @IsGranted("ROLE_ADMIN")
      * @param Request $request
+     * @param $id
      * @return array|RedirectResponse
      */
-    public function changeCampaignAction(Request $request) {
+    public function changeCampaignAction(Request $request, $id) {
 
         $repository = $this->entityManager->getRepository(Campaign::class);
-        $id = $request->attributes->get('id');
         $campaign = $repository->find($id);
 
         $repository = $this->entityManager->getRepository(Adventure::class);
@@ -128,4 +129,45 @@ class CampaignController extends AbstractController
         ];
 
     }
+
+    /**
+     * @Route("/campaign/{id}/delete", name="delete_campaign")
+     * @Template()
+     * @param Request $request
+     * @param $id
+     * @return array|RedirectResponse
+     */
+    public function deleteCampaignConfirmationAction(Request $request, $id)
+    {
+        $repository = $this->entityManager->getRepository(Campaign::class);
+        $campaign = $repository->find($id);
+
+        $deleteCampaignConfirmationForm = $this->createForm(DeleteCampaignConfirmationType::class, []);
+        $deleteCampaignConfirmationForm->handleRequest($request);
+
+        if ($deleteCampaignConfirmationForm->isSubmitted() && $deleteCampaignConfirmationForm->isValid()) {
+
+            $repository = $this->entityManager->getRepository(Adventure::class);
+            $adventureList = $repository->findBy([
+                'campaign' => $id
+            ]);
+
+            foreach ($adventureList as $adventure) {
+                $this->entityManager->remove($adventure);
+            }
+
+            $this->entityManager->remove($campaign);
+            $this->entityManager->flush();
+
+            return new RedirectResponse($this->router->generate('campaigns'));
+        }
+
+        return ['campaign' => $campaign,
+            'id' => $id,
+            'deleteCampaignConfirmationForm' => $deleteCampaignConfirmationForm->createView()
+        ];
+    }
+
+
+
 }

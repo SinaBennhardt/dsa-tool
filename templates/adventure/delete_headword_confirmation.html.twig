@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h3>Möchtest du das Abenteuer <em>"{{ adventure.title }}"</em> wirklich löschen?</h3>
+
+    <p>Das Abenteuer wird dabei aus allen Kampagnen entfernt. Diese Aktion kann nicht rückgängig gemacht
+        werden.</p>
+
+    {{ form_start(deleteAdventureConfirmationForm) }}
+
+    <a class="btn btn-light" role="button" href="{{ path('delete_adventure', {id: id}) }}">
+        Zurück
+    </a>
+
+    {{  form_label(deleteAdventureConfirmationForm.submit) }}
+    {{ form_widget(deleteAdventureConfirmationForm.submit, {attr: {class:"btn btn-danger"}}) }}
+
+    {{ form_end(deleteAdventureConfirmationForm) }}
+
+
+{% endblock content %}

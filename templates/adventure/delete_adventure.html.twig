@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h1>Abenteuer löschen</h1>
+    <br>
+
+    {% for adventure in adventures %}
+
+        <div class="form-group col-md-8">
+            <a class="btn btn-danger" role="button"
+               href="{{ path('delete_adventure_confirmation', {adventureId: adventure.id, id: id}) }}">
+                Löschen
+            </a>
+            <span class="lead"><strong>{{ adventure.title }}</strong></span>
+        </div>
+
+    {% endfor %}
+
+    <div class="form-group">
+        <br>
+        <a class="btn btn-light" role="button" href="{{ path('change_campaign', {id: id}) }}">
+            Zurück
+        </a>
+    </div>
+{% endblock content %}

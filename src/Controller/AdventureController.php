@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Adventure;
 use App\Entity\Campaign;
 use App\Form\AddAdventureType;
+use App\Form\DeleteAdventureConfirmationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -107,4 +108,59 @@ class AdventureController extends AbstractController
             'campaignId' => $campaignId
         ];
     }
+
+
+    /**
+     * @Route("/campaign/{id}/adventures/delete", name="delete_adventure")
+     * @Template()
+     * @param Request $request
+     * @param $id
+     * @return array
+     */
+    public function deleteAdventureAction(Request $request, $id)
+    {
+        $repository = $this->entityManager->getRepository(Adventure::class);
+
+        /** @var Adventure[] $adventures */
+        $adventures = $repository->findBy([
+            'campaign' => $id
+        ]);
+
+        return ['adventures' => $adventures,
+            'id' => $id
+            ];
+    }
+
+    /**
+     * @Route("/campaign/{id}/adventures/delete/{adventureId}", name="delete_adventure_confirmation")
+     * @Template()
+     * @param Request $request
+     * @param $id
+     * @param $adventureId
+     * @return array|RedirectResponse
+     */
+
+    public function deleteHeadwordConfirmationAction(Request $request, $id, $adventureId)
+    {
+        $repository = $this->entityManager->getRepository(Adventure::class);
+        $adventure = $repository->find($adventureId);
+
+        $deleteAdventureConfirmationForm = $this->createForm(DeleteAdventureConfirmationType::class);
+        $deleteAdventureConfirmationForm->handleRequest($request);
+
+        if ($deleteAdventureConfirmationForm->isSubmitted() && $deleteAdventureConfirmationForm->isValid()) {
+
+            $this->entityManager->remove($adventure);
+            $this->entityManager->flush();
+
+            return new RedirectResponse($this->router->generate('delete_adventure', ['id' => $id]));
+        }
+
+        return ['adventure' => $adventure,
+            'id' => $id,
+            "deleteAdventureConfirmationForm" => $deleteAdventureConfirmationForm->createView()
+        ];
+    }
+
+
 }
