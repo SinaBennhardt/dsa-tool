@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Adventure;
+use App\Entity\Campaign;
 use App\Form\AddAdventureType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -55,9 +56,12 @@ class AdventureController extends AbstractController
 
         if ($addAdventureForm->isSubmitted() && $addAdventureForm->isValid()){
             $user = $this->getUser();
-            $adventure->author = $user;
+            $adventure->setAuthor($user);
 
-            $adventure->campaign = $id;
+            $repository = $this->entityManager->getRepository(Campaign::class);
+            $campaign = $repository->find($id);
+
+            $adventure->setCampaign($campaign);
 
             $this->entityManager->persist($adventure);
             $this->entityManager->flush();
@@ -68,6 +72,39 @@ class AdventureController extends AbstractController
         return [
             'addAdventureForm' => $addAdventureForm->createView(),
             'campaign_id' => $id
+        ];
+    }
+
+
+    /**
+     * @Route("/campaign/{campaignId}/adventures/{adventureId}/change", name="change_adventures")
+     * @Template()
+     * @IsGranted("ROLE_ADMIN")
+     * @param Request $request
+     * @param $campaignId
+     * @param $adventureId
+     * @return RedirectResponse|array
+     */
+
+    public function changeAdventureAction(Request $request, $campaignId, $adventureId) {
+        $repository = $this->entityManager->getRepository(Adventure::class);
+        $adventure = $repository->find($adventureId);
+
+        $changeAdventureForm = $this->createForm(AddAdventureType::class, $adventure);
+        $changeAdventureForm->handleRequest($request);
+
+        if ($changeAdventureForm->isSubmitted() && $changeAdventureForm->isValid()){
+
+            $this->entityManager->persist($adventure);
+            $this->entityManager->flush();
+
+            return new RedirectResponse($this->router->generate('change_campaign', ['id' => $campaignId]));
+        }
+
+        return [
+            'changeAdventureForm' => $changeAdventureForm->createView(),
+            'title' => $adventure->getTitle(),
+            'campaignId' => $campaignId
         ];
     }
 }

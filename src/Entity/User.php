@@ -45,6 +45,8 @@ class User implements UserInterface
      */
     private $role;
 
+
+
     /**
      * @return int
      */

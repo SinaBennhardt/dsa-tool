@@ -17,13 +17,13 @@ class PlayerProperties
      * @ORM\GeneratedValue()
      *
      */
-   public $id;
+   private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
      */
 
-   public $user;
+   private $user;
 
 
     /**
@@ -33,7 +33,7 @@ class PlayerProperties
      *     max = 20
      * )
      */
-    public $courage;
+    private $courage;
 
     /**
      * @ORM\Column(type="integer")
@@ -42,7 +42,7 @@ class PlayerProperties
      *     max = 20
      * )
      */
-    public $intelligence;
+    private $intelligence;
 
     /**
      * @ORM\Column(type="integer")
@@ -51,7 +51,7 @@ class PlayerProperties
      *     max = 20
      * )
      */
-    public $intuition;
+    private $intuition;
 
     /**
      * @ORM\Column(type="integer")
@@ -60,7 +60,7 @@ class PlayerProperties
      *     max = 20
      * )
      */
-    public $charisma;
+    private $charisma;
 
     /**
      * @ORM\Column(type="integer")
@@ -69,7 +69,7 @@ class PlayerProperties
      *     max = 20
      * )
      */
-    public $fingerDex;
+    private $fingerDex;
 
     /**
      * @ORM\Column(type="integer")
@@ -78,7 +78,7 @@ class PlayerProperties
      *     max = 20
      * )
      */
-    public $generalDex;
+    private $generalDex;
 
     /**
      * @ORM\Column(type="integer")
@@ -87,7 +87,7 @@ class PlayerProperties
      *     max = 20
      * )
      */
-    public $constitution;
+    private $constitution;
 
     /**
      * @ORM\Column(type="integer")
@@ -96,7 +96,161 @@ class PlayerProperties
      *     max = 20
      * )
      */
-    public $strength;
+    private $strength;
+
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param $user User
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param $courage integer
+     */
+    public function setCourage($courage)
+    {
+        $this->courage = $courage;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getCourage()
+    {
+        return $this->courage;
+    }
+
+    /**
+     * @param $intelligence integer
+     */
+    public function setIntelligence($intelligence)
+    {
+        $this->intelligence = $intelligence;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getIntelligence()
+    {
+        return $this->intelligence;
+    }
+
+    /**
+     * @param $intuition integer
+     */
+    public function setIntuition($intuition)
+    {
+        $this->intuition = $intuition;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getIntuition()
+    {
+        return $this->intuition;
+    }
+
+    /**
+     * @param $charisma integer
+     */
+    public function setCharisma($charisma)
+    {
+        $this->charisma = $charisma;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getCharisma()
+    {
+        return $this->charisma;
+    }
+
+    /**
+     * @param $fingerDex integer
+     */
+    public function setFingerDex($fingerDex)
+    {
+        $this->fingerDex = $fingerDex;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getFingerDex()
+    {
+        return $this->fingerDex;
+    }
+
+    /**
+     * @param $generalDex integer
+     */
+    public function setGeneralDex($generalDex)
+    {
+        $this->generalDex = $generalDex;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getGeneralDex()
+    {
+        return $this->generalDex;
+    }
+
+    /**
+     * @param $constitution integer
+     */
+    public function setConstitution($constitution)
+    {
+        $this->constitution = $constitution;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getConstitution()
+    {
+        return $this->constitution;
+    }
+
+    /**
+     * @param $strength integer
+     */
+    public function setStrength($strength)
+    {
+        $this->strength = $strength;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getStrength()
+    {
+        return $this->strength;
+    }
+
 
     public function getLP() {
         $KO = $this->constitution;

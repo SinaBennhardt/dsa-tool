@@ -60,7 +60,7 @@ class ContentController extends AbstractController
         if ($addContentForm->isSubmitted() && $addContentForm->isValid()) {
 
             $user = $this->getUser();
-            $content->author = $user;
+            $content->setAuthor($user);
 
             $this->entityManager->persist($content);
             $this->entityManager->flush();
