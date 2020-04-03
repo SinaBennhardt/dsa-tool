@@ -109,6 +109,7 @@ class AdventureController extends AbstractController
         ];
     }
 
+
     /**
      * @Route("/campaign/{id}/adventures/delete", name="delete_adventure")
      * @Template()
@@ -160,5 +161,6 @@ class AdventureController extends AbstractController
             "deleteAdventureConfirmationForm" => $deleteAdventureConfirmationForm->createView()
         ];
     }
+
 
 }

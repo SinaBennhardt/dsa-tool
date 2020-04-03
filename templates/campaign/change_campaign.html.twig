@@ -3,21 +3,19 @@
 {% block content %}
 
     {{ form_start(changeCampaignForm) }}
-<<<<<<< Updated upstream
 
-    <h1>Kampagne: {{ campaign_name }}</h1>
-=======
     <div class="form-group">
         <div class="row">
             <div class="col col-lg-10">
                 <h1>Kampagne: {{ campaign_name }}</h1>
             </div>
             <div class="col col-lg-2">
-                <a class="btn btn-light float-right" role="button" href="{{ path('campaigns') }}">Zurück</a>
+
+                <a class="btn btn-secondary float-right" role="button" href="{{ path('campaigns') }}">Zurück</a>
             </div>
         </div>
     </div>
->>>>>>> Stashed changes
+
 
     <div class="form-group">
         <h2>{{ form_label(changeCampaignForm.title) }}</h2>
@@ -33,21 +31,27 @@
     </div>
 
     <div class="form-group">
+        <a class="btn btn-secondary" role="button" href="{{ path('campaigns') }}">Änderungen VERWERFEN</a>
+
+        {{ form_label(changeCampaignForm.submit) }}
+        {{ form_widget(changeCampaignForm.submit, {attr:{class:"btn btn-success"}}) }}
+
+        <a class="btn btn-danger" role="button" href="{{ path('delete_campaign', {id: campaign_id}) }}">Diese Kampagne löschen</a>
+    </div>
+
+
+    <div class="form-group">
         <h2>Abenteuer</h2>
-<<<<<<< Updated upstream
-        --Platzhalter--
-        {# for-Schleife für Abenteuer
-        <a class="btn btn-secondary" role="button" href="{{ path('add_adventure') }}">Abenteuer hinzufügen</a>
-        #}
-=======
 
         {% for adventure in adventures %}
             <div class="form-group">
                 <div class="row">
                     <div class="col col-lg-2">
                         <a class="btn btn-secondary" role="button"
+
                            href="{{ path('change_adventures',
                                {campaignId: campaign_id, adventureId: adventure.id}) }}">Bearbeiten</a>
+
                     </div>
                     <div class="col col-lg-10">
                         <h3>{{ adventure.title }}</h3>
@@ -59,9 +63,10 @@
 
         <a class="btn btn-success" role="button"
            href="{{ path('add_adventures', {id: campaign_id}) }}">Abenteuer hinzufügen</a>
+
         <a class="btn btn-danger" role="button"
            href="{{ path('delete_adventure', {id: campaign_id}) }}">Abenteuer löschen</a>
->>>>>>> Stashed changes
+
     </div>
 
     <div class="form-group">
@@ -72,18 +77,9 @@
         #}
     </div>
 
-<<<<<<< Updated upstream
-    <a class="btn btn-secondary" role="button" href="{{ path('campaigns') }}">Änderungen VERWERFEN</a>
-    {{ form_label(changeCampaignForm.submit) }}
-    {{ form_widget(changeCampaignForm.submit, {attr:{class:"btn btn-success"}}) }}
 
+    <a class="btn btn-secondary float-right" role="button" href="{{ path('campaigns') }}">Zurück</a>
 
-=======
-    <a class="btn btn-danger" role="button" href="{{ path('delete_campaign', {id: campaign_id}) }}">Diese Kampagne löschen</a>
-    {{ form_end(changeCampaignForm) }}
-
-    <a class="btn btn-light float-right" role="button" href="{{ path('campaigns') }}">Zurück</a>
->>>>>>> Stashed changes
     {{ form_end(changeCampaignForm) }}
 
 

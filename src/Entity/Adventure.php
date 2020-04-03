@@ -17,33 +17,119 @@ class Adventure
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue()
      */
-    public $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
      */
-    public $author;
+    private $author;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
-    public $name;
+    private $title;
 
     /**
      * @ORM\Column(type="string")
      */
-    public $blurb;
+    private $blurb;
 
     /**
      * @ORM\ManyToOne(targetEntity="Campaign", inversedBy="adventures")
      *
      */
-    public $campaign;
+    private $campaign;
 
     /**
      * @ORM\ManyToMany(targetEntity="Content", mappedBy="attachedAdventure")
      *
      */
-    public $contents;
+    private $contents;
+
+    public function __constructor()
+    {
+        $this->contents = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param User $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
+
+    /**
+     * @return User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $blurb
+     */
+    public function setBlurb($blurb)
+    {
+        $this->blurb = $blurb;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBlurb()
+    {
+        return $this->blurb;
+    }
+
+    /**
+     * @param Campaign $campaign
+     */
+    public function setCampaign($campaign)
+    {
+        $this->campaign = $campaign;
+    }
+
+    /**
+     * @return Campaign
+     */
+    public function getCampaign()
+    {
+        return $this->campaign;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getContents()
+    {
+        return $this->contents;
+    }
+
 }
