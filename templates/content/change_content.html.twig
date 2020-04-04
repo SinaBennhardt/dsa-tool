@@ -4,7 +4,7 @@
 
     <h1>Inhalt ändern</h1>
 
-    {{ form_start(changeContentForm, {action: path('change_content', {id:content.id})}) }}
+    {{ form_start(changeContentForm, {action: path('change_content', {id: content.id})}) }}
 
     <div class="form-group">
         <h2>{{ form_label(changeContentForm.title) }}</h2>
@@ -29,10 +29,16 @@
         {{ form_widget(changeContentForm.headwords)}}
         {{ form_errors(changeContentForm.headwords) }}
         <br> <br>
+    </div>
 
+    <div class="form-group">
         <a class="btn btn-secondary" role="button" href="{{ path('view_content') }}">Änderungen VERWERFEN</a>
         {{ form_label(changeContentForm.submit) }}
         {{ form_widget(changeContentForm.submit,  {attr:{class:"btn btn-success"}}) }}
+
+        {% if content.access == 'all' or is_granted('ROLE_ADMIN') or (content.access == 'restricted' and user == content.author) %}
+        <a class="btn btn-danger" role="button" href="{{ path('delete_content', {id: id}) }}">Eintrag Löschen</a>
+        {% endif %}
     </div>
 
     {{ form_end(changeContentForm) }}
