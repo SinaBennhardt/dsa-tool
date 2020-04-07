@@ -8,7 +8,7 @@
             Deinen Helden bearbeiten
         {% else %}
             NSC bearbeiten
-        {%  endif %}</h1>
+        {% endif %}</h1>
 
     <h3>Basisinformationen</h3>
 
@@ -150,7 +150,9 @@
     <a class="btn btn-secondary" role="button" href="{{ path('character_sheet') }}">Abbrechen</a>
     {{ form_label(addPlayerCharacterForm.submit) }}
     {{ form_widget(addPlayerCharacterForm.submit, {attr:{class:"btn btn-success"}}) }}
-
+    {% if characterInfo.user == user or is_granted('ROLE_ADMIN') %}
+        <a class="btn btn-danger" role="button" href="{{ path('delete_character', {id: id}) }}">Held Löschen</a>
+    {% endif %}
     {{ form_end(addPlayerCharacterForm) }}
 
 {% endblock content %}

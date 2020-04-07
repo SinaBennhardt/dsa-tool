@@ -7,6 +7,8 @@ use App\Entity\Headword;
 use App\Entity\User;
 use App\Form\AddContentType;
 use App\Form\ChangeContentType;
+use App\Form\DeleteContentConfirmationType;
+use Doctrine\ORM\Mapping\Id;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -125,17 +127,16 @@ class ContentController extends AbstractController
      * @Template()
      * @IsGranted("ROLE_USER")
      * @param Request $request
+     * @param id
      * @return array|RedirectResponse
      */
-    public function changeContentAction(Request $request)
+    public function changeContentAction(Request $request, $id)
     {
         $repository = $this->entityManager->getRepository(Content::class);
-        $id = $request->attributes->get('id');
         $content = $repository->find($id);
 
         $changeContentForm = $this->createForm(ChangeContentType::class, $content);
         $changeContentForm->handleRequest($request);
-
 
         if ($changeContentForm->isSubmitted() && $changeContentForm->isValid()) {
 
@@ -146,12 +147,49 @@ class ContentController extends AbstractController
             $this->entityManager->flush();
 
             return new RedirectResponse($this->router->generate('view_content'));
-
         }
 
         return ["changeContentForm" => $changeContentForm->createView(),
-            "content" => $content
+            "content" => $content,
+            "id" => $id
         ];
 
     }
+
+    /**
+     * @Route("/content/delete/{id}", name="delete_content")
+     * @Template()
+     * @IsGranted("ROLE_USER")
+     * @param Request $request
+     * @param id
+     * @return array|RedirectResponse
+     */
+
+    public function deleteContentAction(Request $request, $id)
+    {
+        $repository = $this->entityManager->getRepository(Content::class);
+        $content = $repository->find($id);
+
+        $deleteContentConfirmationForm = $this->createForm(DeleteContentConfirmationType::class);
+        $deleteContentConfirmationForm->handleRequest($request);
+
+        if ($deleteContentConfirmationForm->isSubmitted() && $deleteContentConfirmationForm->isValid()) {
+
+            $this->addFlash('success',
+                sprintf('Du hast den Eintrag "%s" gelöscht.', $content->getTitle()));
+
+            $this->entityManager->remove($content);
+            $this->entityManager->flush();
+
+            return new RedirectResponse($this->router->generate('view_content'));
+        }
+
+
+        return [
+            'deleteContentConfirmationForm' => $deleteContentConfirmationForm->createView(),
+            'content' => $content,
+            'id' => $id
+        ];
+    }
+
 }

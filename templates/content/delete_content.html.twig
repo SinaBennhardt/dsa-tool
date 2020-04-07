@@ -1,0 +1,22 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+
+    <h3>Möchtest du dein Eintrag <em>"{{ content.title }}"</em> wirklich löschen?</h3>
+
+    <p>Der Eintrag wird dabei aus allen Kampagnen und Abenteuern entfernt. Diese Aktion kann nicht rückgängig gemacht
+        werden.</p>
+
+    {{ form_start(deleteContentConfirmationForm) }}
+
+    <a class="btn btn-light" role="button" href="{{ path('view_content') }}">
+        Zurück
+    </a>
+
+    {{  form_label(deleteContentConfirmationForm.submit) }}
+    {{ form_widget(deleteContentConfirmationForm.submit, {attr: {class:"btn btn-danger"}}) }}
+
+    {{ form_end(deleteContentConfirmationForm) }}
+
+
+{% endblock content %}
