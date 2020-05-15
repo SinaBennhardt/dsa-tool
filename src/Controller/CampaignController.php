@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Entity\Adventure;
 use App\Entity\Campaign;
+use App\Entity\PlayerCharacterInfo;
 use App\Form\AddCampaignType;
 use App\Form\ChangeCampaignType;
 use App\Form\DeleteCampaignConfirmationType;
@@ -75,7 +76,7 @@ class CampaignController extends AbstractController
         $addCampaignForm = $this->createForm(AddCampaignType::class, $campaign);
         $addCampaignForm->handleRequest($request);
 
-        if ($addCampaignForm->isSubmitted() && $addCampaignForm->isValid()){
+        if ($addCampaignForm->isSubmitted() && $addCampaignForm->isValid()) {
 
             $user = $this->getUser();
             $campaign->setAuthor($user);
@@ -86,32 +87,39 @@ class CampaignController extends AbstractController
             $this->entityManager->persist($campaign);
             $this->entityManager->flush();
 
-            return new RedirectResponse($this->router->generate('change_campaign', ['id' => $campaign->getId()]));
+            return new RedirectResponse($this->router->generate('change_campaign', ['campaignId' => $campaign->getId()]));
         }
 
         return ["addCampaignForm" => $addCampaignForm->createView()];
     }
 
     /**
-     * @Route("/campaigns/change/{id}", name="change_campaign")
+     * @Route("/campaigns/{campaignId}/change", name="change_campaign")
      * @Template()
      * @IsGranted("ROLE_ADMIN")
      * @param Request $request
-     * @param $id
+     * @param $campaignId
      * @return array|RedirectResponse
      */
-    public function changeCampaignAction(Request $request, $id) {
+    public function changeCampaignAction(Request $request, $campaignId)
+    {
 
         $repository = $this->entityManager->getRepository(Campaign::class);
-        $campaign = $repository->find($id);
+        $campaign = $repository->find($campaignId);
 
         $repository = $this->entityManager->getRepository(Adventure::class);
 
         /** @var Adventure[] $adventures */
-        $adventures = $repository->findBy( [
+        $adventures = $repository->findBy([
                 'campaign' => $campaign
             ]
         );
+
+        /** @var PlayerCharacterInfo[] $playerCharacters */
+        $repository = $this->entityManager->getRepository(PlayerCharacterInfo::class);
+        $playerCharacters = $repository->findBy([
+           'campaign' =>$campaign
+        ]);
 
         $changeCampaignForm = $this->createForm(ChangeCampaignType::class, $campaign);
         $changeCampaignForm->handleRequest($request);
@@ -124,29 +132,68 @@ class CampaignController extends AbstractController
             $this->entityManager->persist($campaign);
             $this->entityManager->flush();
 
-            return new RedirectResponse($this->router->generate('change_campaign', ['id' => $campaign->getId()]));
+            return new RedirectResponse($this->router->generate('change_campaign', ['campaignId' => $campaign->getId()]));
         }
 
         return [
             'changeCampaignForm' => $changeCampaignForm->createView(),
             'campaign_name' => $campaign->getTitle(),
-            'campaign_id' => $campaign->getId(),
-            'adventures' => $adventures
+            'campaignId' => $campaign->getId(),
+            'adventures' => $adventures,
+            'playerCharacters' => $playerCharacters
         ];
 
     }
 
     /**
-     * @Route("/campaign/{id}/delete", name="delete_campaign")
+     * @Route("/campaigns/{campaignId}/", name="display_campaign")
      * @Template()
+     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
-     * @param $id
+     * @param $campaignId
      * @return array|RedirectResponse
      */
-    public function deleteCampaignConfirmationAction(Request $request, $id)
+
+    public function displayCampaignAction(Request $request, $campaignId)
     {
         $repository = $this->entityManager->getRepository(Campaign::class);
-        $campaign = $repository->find($id);
+        $campaign = $repository->find($campaignId);
+
+        $repository = $this->entityManager->getRepository(Adventure::class);
+
+        /** @var Adventure[] $adventures */
+        $adventures = $repository->findBy([
+                'campaign' => $campaign
+            ]
+        );
+
+        /** @var PlayerCharacterInfo[] $playerCharacters */
+        $repository = $this->entityManager->getRepository(PlayerCharacterInfo::class);
+        $playerCharacters = $repository->findBy([
+            'campaign' =>$campaign
+        ]);
+
+        return [
+            'campaign_name' => $campaign->getTitle(),
+            'campaignId' => $campaign->getId(),
+            'campaign' => $campaign,
+            'adventures' => $adventures,
+            'playerCharacters' => $playerCharacters
+        ];
+    }
+
+
+    /**
+     * @Route("/campaign/{campaignId}/delete", name="delete_campaign")
+     * @Template()
+     * @param Request $request
+     * @param $campaignId
+     * @return array|RedirectResponse
+     */
+    public function deleteCampaignConfirmationAction(Request $request, $campaignId)
+    {
+        $repository = $this->entityManager->getRepository(Campaign::class);
+        $campaign = $repository->find($campaignId);
 
         $deleteCampaignConfirmationForm = $this->createForm(DeleteCampaignConfirmationType::class, []);
         $deleteCampaignConfirmationForm->handleRequest($request);
@@ -155,7 +202,7 @@ class CampaignController extends AbstractController
 
             $repository = $this->entityManager->getRepository(Adventure::class);
             $adventureList = $repository->findBy([
-                'campaign' => $id
+                'campaign' => $campaignId
             ]);
 
             foreach ($adventureList as $adventure) {
@@ -172,11 +219,25 @@ class CampaignController extends AbstractController
         }
 
         return ['campaign' => $campaign,
-            'id' => $id,
+            'id' => $campaignId,
             'deleteCampaignConfirmationForm' => $deleteCampaignConfirmationForm->createView()
         ];
     }
 
+    /**
+     * @Template()
+     */
 
+    public function getCampaigns()
+    {
+        $repository = $this->entityManager->getRepository(Campaign::class);
+        $campaigns = $repository->findBy([], [
+            'title' => 'ASC'
+        ]);
+
+        return ['campaigns' => $campaigns];
+
+
+    }
 
 }

@@ -49,36 +49,38 @@ class PlayerCharacterController extends AbstractController
     }
 
     /**
-     * @Route("/character", name="character_sheet")
+     * @Route("/campaign/{campaignId}/character", name="character_sheet")
      * @Template()
      * @IsGranted("ROLE_USER")
+     * @param $campaignId
      * @param Request $request
      * @return array
      */
-    public function CharacterSheetAction(Request $request)
+    public function CharacterSheetAction(Request $request, $campaignId)
     {
         $user = $this->getUser();
 
         $repository = $this->entityManager->getRepository(PlayerCharacterInfo::class);
         $character = $repository->findBy(
-            ['playerType' => 'Held']
+            ['playerType' => 'Held',
+                'campaign' => $campaignId]
         );
 
-        dump($character);
-
         return ["character" => $character,
-            "user" => $user];
+            "user" => $user,
+            'campaignId' => $campaignId];
     }
 
 
     /**
-     * @Route("/character/creation", name="create_new_character")
+     * @Route("/campaign/{campaignId}/character/creation", name="create_new_character")
      * @Template()
      * @IsGranted("ROLE_USER")
+     * @param $campaignId
      * @param Request $request
      * @return array|Response
      */
-    public function CreateNewCharacterAction(Request $request)
+    public function CreateNewCharacterAction(Request $request, $campaignId)
     {
         $user = $this->getUser();
         $characterInfo = new PlayerCharacterInfo();
@@ -92,6 +94,7 @@ class PlayerCharacterController extends AbstractController
 
         if ($addPlayerCharacterForm->isSubmitted() && $addPlayerCharacterForm->isValid()) {
 
+            $characterInfo->setCampaign($campaignId);
             $this->entityManager->persist($characterInfo);
             $this->entityManager->persist($characterProperties);
             $this->entityManager->flush();
@@ -106,18 +109,19 @@ class PlayerCharacterController extends AbstractController
     }
 
     /**
-     * @Route("/character/change/{id}", name="change_character")
+     * @Route("/campaign/{campaignId}/character/change/{characterId}", name="change_character")
      * @Template()
      * @IsGranted("ROLE_USER")
      * @param Request $request
-     * @param id
+     * @param $characterId
+     * @param $campaignId
      * @return array
      */
 
-    public function ChangeCharacterAction(Request $request, $id)
+    public function ChangeCharacterAction(Request $request, $characterId, $campaignId)
     {
         $repository = $this->entityManager->getRepository(PlayerCharacterInfo::class);
-        $characterInfo = $repository->find($id);
+        $characterInfo = $repository->find($characterId);
 
         $user = $this->getUser();
 
@@ -134,25 +138,26 @@ class PlayerCharacterController extends AbstractController
         }
 
         return ["addPlayerCharacterForm" => $addPlayerCharacterForm->createView(),
-            'id' => $id,
+            'characterId' => $characterId,
             'user' => $user,
             'characterInfo' => $characterInfo
         ];
     }
 
     /**
-     * @Route("/character/delete/{id}", name="delete_character")
+     * @Route("/campaign/{campaignId}/character/delete/{characterId}", name="delete_character")
      * @Template()
      * @IsGranted("ROLE_USER")
      * @param Request $request
-     * @param id
+     * @param $characterId
+     * @param $campaignId
      * @return array|RedirectResponse
      */
 
-    public function deleteCharacterAction(Request $request, $id)
+    public function deleteCharacterAction(Request $request, $characterId, $campaignId)
     {
         $repository = $this->entityManager->getRepository(PlayerCharacterInfo::class);
-        $character = $repository->find($id);
+        $character = $repository->find($characterId);
 
         $deleteCharacterForm = $this->createForm(DeleteCharacterType::class);
         $deleteCharacterForm->handleRequest($request);
@@ -160,7 +165,7 @@ class PlayerCharacterController extends AbstractController
         if ($deleteCharacterForm->isSubmitted() && $deleteCharacterForm->isValid()) {
 
             $repository = $this->entityManager->getRepository(PlayerProperties::class);
-            $characterProperties = $repository->find($id);
+            $characterProperties = $repository->find($characterId);
 
             $this->addFlash('success',
                 sprintf('Der Held "%s" wurde erfolgreich gelöscht.', $character->getCharacterName()));
@@ -174,45 +179,48 @@ class PlayerCharacterController extends AbstractController
 
         return [
             'deleteCharacterForm' => $deleteCharacterForm->createView(),
-            'id' => $id,
+            'characterId' => $characterId,
             'character' => $character
         ];
     }
 
 
     /**
-     * @Route("/nsc", name="all_nsc")
+     * @Route("campaign/{campaignId}/nsc", name="all_nsc")
      * @Template()
      * @IsGranted("ROLE_USER")
+     * @param $campaignId
      * @param Request $request
      * @return array
      */
 
-    public function ListAllNscAction(Request $request)
+    public function ListAllNscAction(Request $request, $campaignId)
     {
         $user = $this->getUser();
 
         $repository = $this->entityManager->getRepository(PlayerCharacterInfo::class);
         $character = $repository->findBy(
-            [
-                'playerType' => 'NSC'
+            ['playerType' => 'NSC',
+                'campaign' => $campaignId
             ]
         );
 
         return ["character" => $character,
-            "user" => $user];
+            "user" => $user,
+            'campaignId' => $campaignId];
     }
 
 
     /**
-     * @Route("/nsc/create", name="new_nsc")
+     * @Route("/campaign/{campaignId}/nsc/create", name="new_nsc")
      * @Template()
      * @IsGranted("ROLE_ADMIN")
+     * @param $campaignId
      * @param Request $request
      * @return array|RedirectResponse
      */
 
-    public function CreateNewNscAction(Request $request)
+    public function CreateNewNscAction(Request $request, $campaignId)
     {
         $user = $this->getUser();
         $characterInfo = new PlayerCharacterInfo();
@@ -227,6 +235,7 @@ class PlayerCharacterController extends AbstractController
         if ($addPlayerCharacterForm->isSubmitted() && $addPlayerCharacterForm->isValid()) {
 
             $characterInfo->setPlayerType('NSC');
+            $characterInfo->setCampaign($campaignId);
 
             $this->addFlash('success',
                 sprintf('Der NSC "%s" wurde erfolgreich erstellt.', $characterInfo->getCharacterName()));
@@ -243,18 +252,19 @@ class PlayerCharacterController extends AbstractController
     }
 
     /**
-     * @Route("/nsc/delete/{id}", name="delete_nsc")
+     * @Route("campaign/{campaignId}/nsc/delete/{nscId}", name="delete_nsc")
      * @Template()
      * @IsGranted("ROLE_ADMIN")
      * @param Request $request
-     * @param id
+     * @param $campaignId
+     * @param $nscId
      * @return array|RedirectResponse
      */
 
-    public function deleteNscAction(Request $request, $id)
+    public function deleteNscAction(Request $request, $nscId, $campaignId)
     {
         $repository = $this->entityManager->getRepository(PlayerCharacterInfo::class);
-        $nsc = $repository->find($id);
+        $nsc = $repository->find($nscId);
 
         $deleteNscForm = $this->createForm(DeleteNscType::class);
         $deleteNscForm->handleRequest($request);
@@ -276,7 +286,7 @@ class PlayerCharacterController extends AbstractController
 
         return [
             'deleteNscForm' => $deleteNscForm->createView(),
-            'id' => $id,
+            'nscId' => $nscId,
             'nsc' => $nsc
         ];
     }

@@ -51,6 +51,11 @@ class Content
     private $headwords;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Campaign", inversedBy="contents")
+     */
+    private $campaign;
+
+    /**
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="Adventure", inversedBy="contents")
      */
@@ -150,6 +155,23 @@ class Content
     public function getAttachedAdventure()
     {
         return $this->attachedAdventure;
+    }
+
+    /**
+     * @return Campaign
+     */
+    public function getCampaign()
+    {
+        return $this->campaign;
+    }
+
+    /**
+     * @param $campaign
+     * @return void
+     */
+    public function setCampaign($campaign)
+    {
+        $this->campaign = $campaign;
     }
 
 }

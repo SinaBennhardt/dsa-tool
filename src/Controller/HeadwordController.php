@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Campaign;
 use App\Entity\Content;
 use App\Entity\Headword;
 use App\Form\AddHeadwordType;
@@ -42,15 +43,21 @@ class HeadwordController extends AbstractController
     }
 
     /**
-     * @Route("/headword/change", name="change_headword")
+     * @Route("/campaign/{campaignId}/headword/change", name="change_headword")
      * @Template()
+     * @param $campaignId
      * @param Request $request
      * @return array|RedirectResponse
      */
-    public function changeHeadwordAction(Request $request)
+    public function changeHeadwordAction(Request $request, $campaignId)
     {
+        $repository = $this->entityManager->getRepository(Campaign::class);
+        $campaign = $repository->find($campaignId);
+
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findBy([], [
+        $headwords = $repository->findBy([
+            'campaign' => $campaign
+        ], [
             'headwordName' => 'ASC'
         ]);
 
@@ -70,12 +77,13 @@ class HeadwordController extends AbstractController
     }
 
     /**
-     * @Route("/headword/add", name="add_headword")
+     * @Route("campaign/{campaignId}/headword/add", name="add_headword")
      * @Template()
+     * @param $campaignId
      * @param Request $request
      * @return array|RedirectResponse
      */
-    public function addHeadwordAction(Request $request)
+    public function addHeadwordAction(Request $request, $campaignId)
     {
         $headword = new Headword;
 
@@ -83,6 +91,10 @@ class HeadwordController extends AbstractController
         $addHeadwordForm->handleRequest($request);
 
         if ($addHeadwordForm->isSubmitted() && $addHeadwordForm->isValid()) {
+            $repository = $this->entityManager->getRepository(Campaign::class);
+            $campaign = $repository->find($campaignId);
+
+            $headword->setCampaign($campaign);
 
             $this->entityManager->persist($headword);
             $this->entityManager->flush();
@@ -90,8 +102,13 @@ class HeadwordController extends AbstractController
             return new RedirectResponse($this->router->generate('add_headword'));
         }
 
+        $repository = $this->entityManager->getRepository(Campaign::class);
+        $campaign = $repository->find($campaignId);
+
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findBy([], [
+        $headwords = $repository->findBy([
+            'campaign' => $campaign
+        ], [
             'headwordName' => 'ASC'
         ]);
 
@@ -102,15 +119,21 @@ class HeadwordController extends AbstractController
 
 
     /**
- * @Route("/headword/delete", name="delete_headword")
- * @Template()
- * @param Request $request
- * @return array|RedirectResponse
- */
-    public function deleteHeadwordAction(Request $request)
+     * @Route("campaign/{campaignId}/headword/delete", name="delete_headword")
+     * @Template()
+     * @param Request $request
+     * @param $campaignId
+     * @return array|RedirectResponse
+     */
+    public function deleteHeadwordAction(Request $request, $campaignId)
     {
+        $repository = $this->entityManager->getRepository(Campaign::class);
+        $campaign = $repository->find($campaignId);
+
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findBy([], [
+        $headwords = $repository->findBy([
+            'campaign' => $campaign
+        ], [
             'headwordName' => 'ASC'
         ]);
 
@@ -119,16 +142,16 @@ class HeadwordController extends AbstractController
     }
 
     /**
-     * @Route("/headword/{id}/delete/", name="delete_headword_confirmation")
+     * @Route("campaign/{campaignId}/headword/{headwordId}/delete/", name="delete_headword_confirmation")
      * @Template()
+     * @param $headwordId
+     * @param $campaignId
      * @param Request $request
      * @return array|RedirectResponse
      */
 
-    public function deleteHeadwordConfirmationAction(Request $request)
+    public function deleteHeadwordConfirmationAction(Request $request, $headwordId, $campaignId)
     {
-        $headwordId = $request->attributes->get('id');
-
         $repository = $this->entityManager->getRepository(Headword::class);
         $headword = $repository->find($headwordId);
 
@@ -170,11 +193,20 @@ class HeadwordController extends AbstractController
 
     /**
      * @Template()
+     * @param Request $request
+     * @return array
      */
-    public function getHeadwords()
+    public function getHeadwords(Request $request)
     {
+        $campaignId = $request->attributes->get('campaignId');
+
+        $repository = $this->entityManager->getRepository(Campaign::class);
+        $campaign = $repository->find($campaignId);
+
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findBy([], [
+        $headwords = $repository->findBy([
+            'campaign' => $campaign
+        ], [
             'headwordName' => 'ASC'
         ]);
 

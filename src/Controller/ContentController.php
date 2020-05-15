@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Campaign;
 use App\Entity\Content;
 use App\Entity\Headword;
 use App\Entity\User;
@@ -46,15 +47,21 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/content/add", name="add_content")
+     * @Route("/campaign/{campaignId}/content/add", name="add_content")
      * @Template()
      * @IsGranted("ROLE_USER")
+     * @param $campaignId
      * @param Request $request
      * @return array|RedirectResponse
      */
-    public function addContentAction(Request $request)
+    public function addContentAction(Request $request, $campaignId)
     {
         $content = new Content();
+        $repository = $this->entityManager->getRepository(Campaign::class);
+        $campaign = $repository->find( [
+            'id' => $campaignId
+            ]
+        );
 
         $addContentForm = $this->createForm(AddContentType::class, $content);
         $addContentForm->handleRequest($request);
@@ -63,6 +70,7 @@ class ContentController extends AbstractController
 
             $user = $this->getUser();
             $content->setAuthor($user);
+            $content->setCampaign($campaign);
 
             $this->entityManager->persist($content);
             $this->entityManager->flush();
@@ -75,13 +83,18 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/content/view", name="view_content")
+     * @Route("/campaign/{campaignId}/content/view", name="view_content")
+     * @param Request $request
+     * @param $campaignId
+     * @return array
      * @Template()
      */
-    public function listContentAction()
+    public function listContentAction(Request $request, $campaignId)
     {
         $repository = $this->entityManager->getRepository(Content::class);
-        $contents = $repository->findAll();
+        $contents = $repository->findBy([
+            'campaign' => $campaignId
+        ]);
 
         $user = $this->getUser();
 
@@ -90,20 +103,22 @@ class ContentController extends AbstractController
     }
 
     /**
-     * @Route("/content/view/headword/{id}", name="content_sorted_by_headword")
+     * @Route("/campaign/{campaignId}/content/view/headword/{headwordId}", name="content_sorted_by_headword")
      * @Template()
      * @IsGranted("ROLE_USER")
+     * @param $campaignId
      * @param Request $request
      * @return array
      */
 
-    public function listContentByHeadwordAction(Request $request)
+    public function listContentByHeadwordAction(Request $request, $campaignId)
     {
-        $headwordId = $request->attributes->get('id');
+        $headwordId = $request->attributes->get('headwordId');
 
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headword = $repository->findBy( [
-            'id' => $headwordId
+        $headword = $repository->findBy([
+            'id' => $headwordId,
+            'campaign' => $campaignId
         ]);
 
         $builder = $this->entityManager->createQueryBuilder();
@@ -119,21 +134,23 @@ class ContentController extends AbstractController
 
         return ['contents' => $contents,
             'headword' => $headword[0],
+            'campaignId' => $campaignId,
             'user' => $user];
     }
 
     /**
-     * @Route("/content/change/{id}", name="change_content")
+     * @Route("campaign/{campaignId}/content/change/{contentId}", name="change_content")
      * @Template()
      * @IsGranted("ROLE_USER")
      * @param Request $request
-     * @param id
+     * @param $campaignId
+     * @param $contentId
      * @return array|RedirectResponse
      */
-    public function changeContentAction(Request $request, $id)
+    public function changeContentAction(Request $request, $contentId, $campaignId)
     {
         $repository = $this->entityManager->getRepository(Content::class);
-        $content = $repository->find($id);
+        $content = $repository->find($contentId);
 
         $changeContentForm = $this->createForm(ChangeContentType::class, $content);
         $changeContentForm->handleRequest($request);
@@ -141,7 +158,7 @@ class ContentController extends AbstractController
         if ($changeContentForm->isSubmitted() && $changeContentForm->isValid()) {
 
             $this->addFlash('success',
-                sprintf('Du hast dein Eintrag "%s" geändert.', $content->getTitle()));
+                sprintf('Du hast den Eintrag "%s" geändert.', $content->getTitle()));
 
             $this->entityManager->persist($content);
             $this->entityManager->flush();
@@ -151,24 +168,26 @@ class ContentController extends AbstractController
 
         return ["changeContentForm" => $changeContentForm->createView(),
             "content" => $content,
-            "id" => $id
+            "contentId" => $contentId,
+            'campaignId' => $campaignId
         ];
 
     }
 
     /**
-     * @Route("/content/delete/{id}", name="delete_content")
+     * @Route("/campaign/{campaignId}/content/delete/{contentId}", name="delete_content")
      * @Template()
      * @IsGranted("ROLE_USER")
      * @param Request $request
-     * @param id
+     * @param $contentId
+     * @param $campaignId
      * @return array|RedirectResponse
      */
 
-    public function deleteContentAction(Request $request, $id)
+    public function deleteContentAction(Request $request, $contentId, $campaignId)
     {
         $repository = $this->entityManager->getRepository(Content::class);
-        $content = $repository->find($id);
+        $content = $repository->find($contentId);
 
         $deleteContentConfirmationForm = $this->createForm(DeleteContentConfirmationType::class);
         $deleteContentConfirmationForm->handleRequest($request);
@@ -188,7 +207,7 @@ class ContentController extends AbstractController
         return [
             'deleteContentConfirmationForm' => $deleteContentConfirmationForm->createView(),
             'content' => $content,
-            'id' => $id
+            'contentId' => $contentId
         ];
     }
 

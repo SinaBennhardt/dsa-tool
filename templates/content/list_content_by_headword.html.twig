@@ -1,4 +1,4 @@
-{% extends "base.html.twig" %}
+{% extends "campaign_layout.html.twig" %}
 
 {% block content %}
 
@@ -18,14 +18,15 @@
 
             <br>
             {% if user == content.author or is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('content_sorted_by_headword', {id: content.id}) }}">Bearbeiten</a>
+                <a href="{{ path('change_content',
+                    {contentId: content.id, campaignId: campaignId}) }}">Bearbeiten</a>
                 <br>
             {% endif %}
 
             {% for headword in content.headwords %}
 
-                <a class="badge badge-secondary" href="{{ path('content_sorted_by_headword', {id: headword.id}) }}">
-                    {{ headword.headwordName }}
+                <a class="badge badge-secondary" href="{{ path('content_sorted_by_headword',
+                    {contentId: content.id, headwordId: headword.id}) }}"> {{ headword.headwordName }}
                 </a>
 
             {% endfor %}
