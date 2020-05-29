@@ -107,14 +107,13 @@ class ContentController extends AbstractController
      * @Template()
      * @IsGranted("ROLE_USER")
      * @param $campaignId
+     * @param $headwordId
      * @param Request $request
      * @return array
      */
 
-    public function listContentByHeadwordAction(Request $request, $campaignId)
+    public function listContentByHeadwordAction(Request $request, $campaignId, $headwordId)
     {
-        $headwordId = $request->attributes->get('headwordId');
-
         $repository = $this->entityManager->getRepository(Headword::class);
         $headword = $repository->findBy([
             'id' => $headwordId,
