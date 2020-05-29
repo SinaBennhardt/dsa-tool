@@ -4,26 +4,27 @@
 
     <h1>Neues Abenteuer</h1>
 
-    {{ form_start(addAdventureForm) }}
+    {{ form_start(AdventureForm) }}
     <div class="form-group">
-        <h2>{{ form_label(addAdventureForm.title) }}</h2>
-        {{ form_widget(addAdventureForm.title, {attr:{size:"90%"}}) }}
-        {{ form_errors(addAdventureForm.title) }}
+        <h2>{{ form_label(AdventureForm.title) }}</h2>
+        {{ form_widget(AdventureForm.title, {attr:{size:"90%"}}) }}
+        {{ form_errors(AdventureForm.title) }}
     </div>
 
     <div class="form-group">
-        <h2>{{ form_label(addAdventureForm.blurb) }}</h2>
-        {{ form_widget(addAdventureForm.blurb, {attr:{rows:"10", cols:"90%",
+        <h2>{{ form_label(AdventureForm.blurb) }}</h2>
+        {{ form_widget(AdventureForm.blurb, {attr:{rows:"10", cols:"90%",
             placeholder: "Schreibe hier deine Zusammenfassung hin"}}) }}
-        {{ form_errors(addAdventureForm.blurb) }}
+        {{ form_errors(AdventureForm.blurb) }}
     </div>
 
     <a class="btn btn-secondary" role="button"
-       href="{{ path('change_campaign', {id: campaign_id}) }}">Änderungen VERWERFEN</a>
-    {{ form_label(addAdventureForm.submit) }}
-    {{ form_widget(addAdventureForm.submit, {attr:{class:"btn btn-success"}}) }}
+       href="{{ path('change_campaign', {campaignId: campaignId}) }}">Änderungen VERWERFEN</a>
+    {{ form_label(AdventureForm.submit) }}
+    {{ form_widget(AdventureForm.submit, {attr:{class:"btn btn-success"}}) }}
 
-    {{ form_end(addAdventureForm) }}
+
+    {{ form_end(AdventureForm) }}
 
 
 {% endblock content %}

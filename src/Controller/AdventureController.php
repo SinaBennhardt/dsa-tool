@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Adventure;
 use App\Entity\Campaign;
-use App\Form\AddAdventureType;
+use App\Form\AdventureType;
 use App\Form\DeleteAdventureConfirmationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -41,21 +41,21 @@ class AdventureController extends AbstractController
     }
 
     /**
-     * @Route("/campaign/{id}/adventures/add", name="add_adventures")
+     * @Route("/campaign/{campaignId}/adventures/add", name="add_adventures")
      * @Template()
      * @IsGranted("ROLE_ADMIN")
      * @param Request $request
-     * @param $id
+     * @param $campaignId
      * @return array|RedirectResponse
      */
 
-    public function addAdventureAction (Request $request, $id) {
+    public function addAdventureAction (Request $request, $campaignId) {
         $adventure = new Adventure();
 
-        $addAdventureForm = $this->createForm(AddAdventureType::class, $adventure);
-        $addAdventureForm->handleRequest($request);
+        $AdventureForm = $this->createForm(AdventureType::class, $adventure);
+        $AdventureForm->handleRequest($request);
 
-        if ($addAdventureForm->isSubmitted() && $addAdventureForm->isValid()){
+        if ($AdventureForm->isSubmitted() && $AdventureForm->isValid()){
             $user = $this->getUser();
             $adventure->setAuthor($user);
 
@@ -74,8 +74,9 @@ class AdventureController extends AbstractController
         }
 
         return [
-            'addAdventureForm' => $addAdventureForm->createView(),
-            'campaign_id' => $id
+
+            'AdventureForm' => $AdventureForm->createView(),
+            'campaignId' => $campaignId
         ];
     }
 
@@ -94,10 +95,10 @@ class AdventureController extends AbstractController
         $repository = $this->entityManager->getRepository(Adventure::class);
         $adventure = $repository->find($adventureId);
 
-        $changeAdventureForm = $this->createForm(AddAdventureType::class, $adventure);
-        $changeAdventureForm->handleRequest($request);
+        $AdventureForm = $this->createForm(AdventureType::class, $adventure);
+        $AdventureForm->handleRequest($request);
 
-        if ($changeAdventureForm->isSubmitted() && $changeAdventureForm->isValid()){
+        if ($AdventureForm->isSubmitted() && $AdventureForm->isValid()){
 
             $this->entityManager->persist($adventure);
             $this->entityManager->flush();
@@ -109,7 +110,7 @@ class AdventureController extends AbstractController
         }
 
         return [
-            'changeAdventureForm' => $changeAdventureForm->createView(),
+            'AdventureForm' => $AdventureForm->createView(),
             'title' => $adventure->getTitle(),
             'campaignId' => $campaignId
         ];
