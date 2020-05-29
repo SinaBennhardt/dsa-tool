@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        <div class="row" style="background-color: #e0ddcf;">
+            <div class="col col-lg-2" style="background-color: #474448;"></div>
+            <div class="col col-lg-8">
+                <nav class="navbar navbar-expand-lg navbar-light border-bottom border-light"
+                     style="background-color: #e0ddcf;">
+                    <div><br></div>
+                    {% block navigation %}
+                    {% endblock navigation %}
+                </nav>
+                <div><br></div>
+            </div>
+            <div class="col col-lg-2"></div>
+        </div>
+        <div class="row">
+
+            <div class="col col-lg-2" style="background-color: #474448;">
+                {% if is_granted('ROLE_USER') %}
+                    {{ render(controller('App\\Controller\\CampaignController::getCampaigns')) }}
+                {% endif %}
+            </div>
+
+            <div class="col col-lg-8" style="background-color: #e0ddcf;">
+                {% block main %}
+                {% endblock main %}
+            </div>
+
+            <div class="col col-lg-2" style="background-color: #e0ddcf;">
+                {% block sidebar %}
+                {% endblock sidebar %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col col-lg-12" style="background-color: #e0ddcf;">
+                {% include 'footer.html.twig' %}
+            </div>
+        </div>
+    </div>
+
+{% endblock body %}
+
+
+
+

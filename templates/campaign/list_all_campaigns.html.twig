@@ -1,13 +1,16 @@
-{% extends "base.html.twig" %}
+{% extends "base_layout.html.twig" %}
 
-{% block content %}
+{% block navigation %}
+{% endblock navigation %}
+
+{% block main %}
 
     <h1>Meine Kampagnen</h1>
 
     {% for campaign in campaigns %}
         <div class="row">
             <div class="col col-lg-2">
-                <a href="{{ path('change_campaign', {id: campaign.id}) }}">
+                <a href="{{ path('change_campaign', {campaignId: campaign.id}) }}">
                     <img src="{{ asset("images/add_more.jpg") }}" alt="Kampagne beaarbeiten" class="img-fluid rounded-lg" >
                 </a>
             </div>
@@ -18,7 +21,7 @@
 
                 {{ campaign.blurb }} <br>
 
-                <a href="{{ path('change_campaign', {id: campaign.id}) }}">Mehr</a>
+                <a href="{{ path('change_campaign', {campaignId: campaign.id}) }}">Mehr</a>
             </div>
         </div>
         <br><br>
@@ -34,4 +37,4 @@
         </a>
     </figure>
 
-{% endblock content %}
+{% endblock main %}

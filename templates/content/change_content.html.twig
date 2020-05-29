@@ -1,10 +1,10 @@
-{% extends "base.html.twig" %}
+{% extends "campaign_layout.html.twig" %}
 
 {% block content %}
 
     <h1>Inhalt ändern</h1>
 
-    {{ form_start(changeContentForm, {action: path('change_content', {id: content.id})}) }}
+    {{ form_start(changeContentForm, {action: path('change_content', {contentId: content.id})}) }}
 
     <div class="form-group">
         <h2>{{ form_label(changeContentForm.title) }}</h2>
@@ -37,7 +37,8 @@
         {{ form_widget(changeContentForm.submit,  {attr:{class:"btn btn-success"}}) }}
 
         {% if content.access == 'all' or is_granted('ROLE_ADMIN') or (content.access == 'restricted' and user == content.author) %}
-        <a class="btn btn-danger" role="button" href="{{ path('delete_content', {id: id}) }}">Eintrag Löschen</a>
+        <a class="btn btn-danger" role="button"
+           href="{{ path('delete_content', {contentId: contentId, campaignId: campaignId}) }}">Eintrag Löschen</a>
         {% endif %}
     </div>
 

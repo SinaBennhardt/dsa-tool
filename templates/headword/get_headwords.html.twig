@@ -3,7 +3,7 @@
 
     {% for every_headword in headwords %}
         <li class="nav-item">
-            <a href="{{ path('content_sorted_by_headword', {id: every_headword.id}) }}">
+            <a href="{{ path('content_sorted_by_headword', {headwordId: every_headword.id}) }}">
                 {{ every_headword.headwordName }} ({{ every_headword.contents.count() }})</a>
         </li>
     {% endfor %}

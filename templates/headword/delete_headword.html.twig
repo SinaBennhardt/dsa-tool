@@ -1,4 +1,4 @@
-{% extends "base.html.twig" %}
+{% extends "campaign_layout.html.twig" %}
 
 {% block content %}
 
@@ -8,7 +8,7 @@
 
     {% for headword in headwords %}
         <div class="form-group col-md-8">
-            <a class="btn btn-danger" role="button" href="{{ path('delete_headword_confirmation', {id: headword.id}) }}">
+            <a class="btn btn-danger" role="button" href="{{ path('delete_headword_confirmation', {headwordId: headword.id}) }}">
                 Löschen
             </a>
             <span class="lead"><strong>{{ headword.headwordName }}</strong></span>

@@ -1,4 +1,4 @@
-{% extends "base.html.twig" %}
+{% extends "campaign_layout.html.twig" %}
 
 {% block content %}
 
@@ -9,7 +9,7 @@
 
     {{ form_start(deleteAdventureConfirmationForm) }}
 
-    <a class="btn btn-light" role="button" href="{{ path('delete_adventure', {id: id}) }}">
+    <a class="btn btn-light" role="button" href="{{ path('delete_adventure', {campaignId: campaignId}) }}">
         Zurück
     </a>
 

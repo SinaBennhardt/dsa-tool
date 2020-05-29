@@ -14,50 +14,11 @@
 </head>
 <body>
 
-<div class="container-fluid">
-    <div class="row" style="background-color: #e0ddcf;">
-        <div class="col col-lg-2" style="background-color: #474448;"></div>
-        <div class="col col-lg-8">
-            {% include 'navigation.html.twig' %}
-        </div>
-        <div class="col col-lg-2"></div>
-    </div>
+{% block body %}
 
-    <div class="row">
-        <div class="col col-lg-2" style="background-color: #474448;">
-            - linkes Menü -
-        </div>
-        <div class="col col-lg-8" style="background-color: #e0ddcf;">
-            {% for message in app.flashes('success') %}
-                <div class="alert alert-success" role="alert">
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endfor %}
+{% endblock body %}
 
-            {% block content %}
-                <h1>Die Seite, auf die du zugreifen möchtest, existiert noch nicht.</h1>
-            {% endblock %}
-        </div>
-        <div class="col col-lg-2" style="background-color: #e0ddcf;">
-            {% if is_granted('ROLE_USER') %}
-                {{ render(controller('App\\Controller\\HeadwordController::getHeadwords')) }}
-            {% endif %}
-        </div>
-
-    </div>
-
-    <div class="row">
-        <div class="col col-lg-12" style="background-color: #e0ddcf;">
-            {% include 'footer.html.twig' %}
-        </div>
-    </div>
-</div>
 </body>
-</html>
-
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -70,7 +31,4 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-
-
-
-
+</html>

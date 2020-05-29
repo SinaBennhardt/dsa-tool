@@ -48,7 +48,6 @@ class AdventureController extends AbstractController
      * @param $campaignId
      * @return array|RedirectResponse
      */
-
     public function addAdventureAction (Request $request, $campaignId) {
         $adventure = new Adventure();
 
@@ -90,7 +89,6 @@ class AdventureController extends AbstractController
      * @param $adventureId
      * @return RedirectResponse|array
      */
-
     public function changeAdventureAction(Request $request, $campaignId, $adventureId) {
         $repository = $this->entityManager->getRepository(Adventure::class);
         $adventure = $repository->find($adventureId);
@@ -146,7 +144,6 @@ class AdventureController extends AbstractController
      * @param $adventureId
      * @return array|RedirectResponse
      */
-
     public function deleteAdventureConfirmationAction(Request $request, $id, $adventureId)
     {
         $repository = $this->entityManager->getRepository(Adventure::class);
@@ -171,6 +168,4 @@ class AdventureController extends AbstractController
             "deleteAdventureConfirmationForm" => $deleteAdventureConfirmationForm->createView()
         ];
     }
-
-
 }
