@@ -3,6 +3,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -26,13 +27,17 @@ class PlayerCharacterInfo
      */
     private $user;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Campaign", inversedBy="heroes")
+     *
+     */
+    private $campaign;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
      *
      */
-
     private $playerType = 'Held';
 
     /**
@@ -93,6 +98,8 @@ class PlayerCharacterInfo
      * @Assert\NotBlank()
      */
     private $uniqueSkills;
+
+
 
 
     /**
@@ -279,5 +286,22 @@ class PlayerCharacterInfo
     public function getUniqueSkills()
     {
         return $this->uniqueSkills;
+    }
+
+    /**
+     * @return Campaign
+     */
+    public function getCampaign()
+    {
+        return $this->campaign;
+    }
+
+    /**
+     * @param $campaign
+     * @return void
+     */
+    public function setCampaign($campaign)
+    {
+        $this->campaign = $campaign;
     }
 }

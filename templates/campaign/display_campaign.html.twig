@@ -2,43 +2,18 @@
 
 {% block content %}
 
-    {{ form_start(changeCampaignForm) }}
+    <h1>Kampagne: {{ campaign_name }}</h1>
 
     <div class="form-group">
-        <div class="row">
-            <div class="col col-lg-10">
-                <h1>Kampagne: {{ campaign_name }}</h1>
-            </div>
-            <div class="col col-lg-2">
-
-                <a class="btn btn-secondary float-right" role="button" href="{{ path('campaigns') }}">Zurück</a>
-            </div>
-        </div>
+        <inline style="font-weight: bold">Zusammenfassung:</inline> {{ campaign.blurb }}
+    </div>
+    <div>
+        <a class="btn btn-secondary" role="button"
+           href="{{ path('change_campaign',
+               {campaignId: campaignId}) }}">Titel oder Zusammenfassung bearbeiten</a>
     </div>
 
-
-    <div class="form-group">
-        <h2>{{ form_label(changeCampaignForm.title) }}</h2>
-        {{ form_widget(changeCampaignForm.title, {attr:{size:"90%"}}) }}
-        {{ form_errors(changeCampaignForm.title) }}
-    </div>
-
-    <div class="form-group">
-        <h2>{{ form_label(changeCampaignForm.blurb) }}</h2>
-        {{ form_widget(changeCampaignForm.blurb, {attr:{rows:"10", cols:"90%",
-            placeholder: "Schreibe hier deine Zusammenfassung hin"}}) }}
-        {{ form_errors(changeCampaignForm.blurb) }}
-    </div>
-
-    <div class="form-group">
-        <a class="btn btn-secondary" role="button" href="{{ path('campaigns') }}">Änderungen VERWERFEN</a>
-
-        {{ form_label(changeCampaignForm.submit) }}
-        {{ form_widget(changeCampaignForm.submit, {attr:{class:"btn btn-success"}}) }}
-
-        <a class="btn btn-danger" role="button" href="{{ path('delete_campaign', {campaignId: campaignId}) }}">Diese Kampagne löschen</a>
-    </div>
-
+    <div><br></div>
 
     <div class="form-group">
         <h2>Abenteuer</h2>
@@ -88,11 +63,6 @@
             </div>
         {% endfor %}
     </div>
-
-
-    <a class="btn btn-secondary float-right" role="button" href="{{ path('campaigns') }}">Zurück</a>
-
-    {{ form_end(changeCampaignForm) }}
 
 
 {% endblock content %}

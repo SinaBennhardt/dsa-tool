@@ -1,4 +1,4 @@
-{% extends "base.html.twig" %}
+{% extends "campaign_layout.html.twig" %}
 
 {% block content %}
 
@@ -19,7 +19,7 @@
     </div>
 
     <a class="btn btn-secondary" role="button"
-       href="{{ path('change_campaign', {id: campaign_id}) }}">Änderungen VERWERFEN</a>
+       href="{{ path('change_campaign', {campaignId: campaignId}) }}">Änderungen VERWERFEN</a>
     {{ form_label(addAdventureForm.submit) }}
     {{ form_widget(addAdventureForm.submit, {attr:{class:"btn btn-success"}}) }}
 

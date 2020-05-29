@@ -1,4 +1,4 @@
-{% extends "base.html.twig" %}
+{% extends "campaign_layout.html.twig" %}
 
 {% block content %}
 
@@ -151,7 +151,7 @@
     {{ form_label(addPlayerCharacterForm.submit) }}
     {{ form_widget(addPlayerCharacterForm.submit, {attr:{class:"btn btn-success"}}) }}
     {% if characterInfo.user == user or is_granted('ROLE_ADMIN') %}
-        <a class="btn btn-danger" role="button" href="{{ path('delete_character', {id: id}) }}">Held Löschen</a>
+        <a class="btn btn-danger" role="button" href="{{ path('delete_character', {characterId: characterId}) }}">Held Löschen</a>
     {% endif %}
     {{ form_end(addPlayerCharacterForm) }}
 

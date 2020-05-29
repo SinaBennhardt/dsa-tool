@@ -41,15 +41,14 @@ class AdventureController extends AbstractController
     }
 
     /**
-     * @Route("/campaign/{id}/adventures/add", name="add_adventures")
+     * @Route("/campaign/{campaignId}/adventures/add", name="add_adventures")
      * @Template()
      * @IsGranted("ROLE_ADMIN")
      * @param Request $request
-     * @param $id
+     * @param $campaignId
      * @return array|RedirectResponse
      */
-
-    public function addAdventureAction (Request $request, $id) {
+    public function addAdventureAction (Request $request, $campaignId) {
         $adventure = new Adventure();
 
         $addAdventureForm = $this->createForm(AddAdventureType::class, $adventure);
@@ -60,7 +59,7 @@ class AdventureController extends AbstractController
             $adventure->setAuthor($user);
 
             $repository = $this->entityManager->getRepository(Campaign::class);
-            $campaign = $repository->find($id);
+            $campaign = $repository->find($campaignId);
 
             $adventure->setCampaign($campaign);
 
@@ -70,12 +69,12 @@ class AdventureController extends AbstractController
             $this->addFlash('success',
                 sprintf('Das Abenteuer "%s" wurde erfolgreich erstellt.', $adventure->getTitle()));
 
-            return new RedirectResponse($this->router->generate('change_campaign', ['id' => $id]));
+            return new RedirectResponse($this->router->generate('change_campaign', ['campaignId' => $campaignId]));
         }
 
         return [
             'addAdventureForm' => $addAdventureForm->createView(),
-            'campaign_id' => $id
+            'campaignId' => $campaignId
         ];
     }
 
@@ -89,7 +88,6 @@ class AdventureController extends AbstractController
      * @param $adventureId
      * @return RedirectResponse|array
      */
-
     public function changeAdventureAction(Request $request, $campaignId, $adventureId) {
         $repository = $this->entityManager->getRepository(Adventure::class);
         $adventure = $repository->find($adventureId);
@@ -117,36 +115,35 @@ class AdventureController extends AbstractController
 
 
     /**
-     * @Route("/campaign/{id}/adventures/delete", name="delete_adventure")
+     * @Route("/campaign/{campaignId}/adventures/delete", name="delete_adventure")
      * @Template()
      * @param Request $request
-     * @param $id
+     * @param $campaignId
      * @return array
      */
-    public function deleteAdventureAction(Request $request, $id)
+    public function deleteAdventureAction(Request $request, $campaignId)
     {
         $repository = $this->entityManager->getRepository(Adventure::class);
 
         /** @var Adventure[] $adventures */
         $adventures = $repository->findBy([
-            'campaign' => $id
+            'campaign' => $campaignId
         ]);
 
         return ['adventures' => $adventures,
-            'id' => $id
+            'campaignId' => $campaignId
             ];
     }
 
     /**
-     * @Route("/campaign/{id}/adventures/delete/{adventureId}", name="delete_adventure_confirmation")
+     * @Route("/campaign/{campaignId}/adventures/delete/{adventureId}", name="delete_adventure_confirmation")
      * @Template()
      * @param Request $request
-     * @param $id
+     * @param $campaignId
      * @param $adventureId
      * @return array|RedirectResponse
      */
-
-    public function deleteAdventureConfirmationAction(Request $request, $id, $adventureId)
+    public function deleteAdventureConfirmationAction(Request $request, $campaignId, $adventureId)
     {
         $repository = $this->entityManager->getRepository(Adventure::class);
         $adventure = $repository->find($adventureId);
@@ -162,11 +159,11 @@ class AdventureController extends AbstractController
             $this->entityManager->remove($adventure);
             $this->entityManager->flush();
 
-            return new RedirectResponse($this->router->generate('delete_adventure', ['id' => $id]));
+            return new RedirectResponse($this->router->generate('delete_adventure', ['campaignId' => $campaignId]));
         }
 
         return ['adventure' => $adventure,
-            'id' => $id,
+            'campaignId' => $campaignId,
             "deleteAdventureConfirmationForm" => $deleteAdventureConfirmationForm->createView()
         ];
     }

@@ -1,4 +1,4 @@
-{% extends "base.html.twig" %}
+{% extends "campaign_layout.html.twig" %}
 
 {% block content %}
 
@@ -9,7 +9,7 @@
 
         <div class="form-group col-md-8">
             <a class="btn btn-danger" role="button"
-               href="{{ path('delete_adventure_confirmation', {adventureId: adventure.id, id: id}) }}">
+               href="{{ path('delete_adventure_confirmation', {adventureId: adventure.id, campaignId: campaignId}) }}">
                 Löschen
             </a>
             <span class="lead"><strong>{{ adventure.title }}</strong></span>
@@ -19,7 +19,7 @@
 
     <div class="form-group">
         <br>
-        <a class="btn btn-light" role="button" href="{{ path('change_campaign', {id: id}) }}">
+        <a class="btn btn-light" role="button" href="{{ path('change_campaign', {campaignId: campaignId}) }}">
             Zurück
         </a>
     </div>

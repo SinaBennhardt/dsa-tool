@@ -38,10 +38,28 @@ class Campaign
     private $blurb;
 
     /**
-     * * @ORM\OneToMany(targetEntity="Adventure", mappedBy="campaign")
+     *  @ORM\OneToMany(targetEntity="Adventure", mappedBy="campaign")
      *
      */
     private $adventures;
+
+    /**
+     * @ORM\OneToMany(targetEntity="PlayerCharacterInfo", mappedBy="campaign")
+     *
+     */
+    private $heroes;
+
+    /**
+     *  @ORM\OneToMany(targetEntity="Headword", mappedBy="campaign")
+     *
+     */
+    private $headwords;
+
+    /**
+     *  @ORM\OneToMany(targetEntity="Content", mappedBy="campaign")
+     *
+     */
+    private $contents;
 
 
     /**
@@ -109,9 +127,35 @@ class Campaign
         return $this->adventures;
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getHeroes()
+    {
+        return $this->heroes;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getHeadwords()
+    {
+        return $this->headwords;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getContents()
+    {
+        return $this->contents;
+    }
 
     public function __construct()
     {
         $this->adventures = new ArrayCollection();
+        $this->heroes = new ArrayCollection();
+        $this->headwords = new ArrayCollection();
+        $this->contents = new ArrayCollection();
     }
 }

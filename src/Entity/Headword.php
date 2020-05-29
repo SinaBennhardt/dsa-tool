@@ -31,6 +31,12 @@ class Headword
      */
     private $contents;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Campaign", inversedBy="headwords")
+     *
+     */
+    private $campaign;
+
 
     /**
      * @return int
@@ -63,6 +69,26 @@ class Headword
     {
         return $this->contents;
     }
+
+    /**
+     * @return Campaign
+     */
+    public function getCampaign()
+    {
+        return $this->campaign;
+
+    }
+
+    /**
+     * @param $campaign
+     * @return void
+     */
+    public function setCampaign($campaign)
+    {
+        $this->campaign = $campaign;
+    }
+
+
 
     public function __construct()
     {
