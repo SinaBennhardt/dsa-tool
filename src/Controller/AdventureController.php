@@ -59,7 +59,7 @@ class AdventureController extends AbstractController
             $adventure->setAuthor($user);
 
             $repository = $this->entityManager->getRepository(Campaign::class);
-            $campaign = $repository->find($id);
+            $campaign = $repository->find($campaignId);
 
             $adventure->setCampaign($campaign);
 
@@ -69,7 +69,7 @@ class AdventureController extends AbstractController
             $this->addFlash('success',
                 sprintf('Das Abenteuer "%s" wurde erfolgreich erstellt.', $adventure->getTitle()));
 
-            return new RedirectResponse($this->router->generate('change_campaign', ['id' => $id]));
+            return new RedirectResponse($this->router->generate('change_campaign', ['id' => $campaignId]));
         }
 
         return [
@@ -116,23 +116,23 @@ class AdventureController extends AbstractController
 
 
     /**
-     * @Route("/campaign/{id}/adventures/delete", name="delete_adventure")
+     * @Route("/campaign/{campaignId}/adventures/delete", name="delete_adventure")
      * @Template()
      * @param Request $request
-     * @param $id
+     * @param $campaignId
      * @return array
      */
-    public function deleteAdventureAction(Request $request, $id)
+    public function deleteAdventureAction(Request $request, $campaignId)
     {
         $repository = $this->entityManager->getRepository(Adventure::class);
 
         /** @var Adventure[] $adventures */
         $adventures = $repository->findBy([
-            'campaign' => $id
+            'campaign' => $campaignId
         ]);
 
         return ['adventures' => $adventures,
-            'id' => $id
+            'id' => $campaignId
             ];
     }
 
