@@ -1,0 +1,21 @@
+{% extends "campaign_layout.html.twig" %}
+
+{% block content %}
+
+    <h3>Möchtest du den Charakter <em>"{{ character.characterName }}"</em> wirklich löschen?</h3>
+
+    <p>Diese Aktion kann nicht rückgängig gemacht werden.</p>
+
+    {{ form_start(deleteConfirmationForm) }}
+
+    <a class="btn btn-light" role="button" href="{{ path('change_character', {characterId: characterId}) }}">
+        Zurück
+    </a>
+
+    {{  form_label(deleteConfirmationForm.submit) }}
+    {{ form_widget(deleteConfirmationForm.submit, {attr: {class:"btn btn-danger"}}) }}
+
+    {{ form_end(deleteForm) }}
+
+
+{% endblock content %}

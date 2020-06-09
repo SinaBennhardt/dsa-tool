@@ -4,11 +4,13 @@
 
     {{ form_start(addPlayerCharacterForm) }}
 
-    <h1>{% if addPlayerCharacterForm.playerProperty == 'Held' %}
-            Deinen Helden bearbeiten
-        {% else %}
-            NSC bearbeiten
-        {% endif %}</h1>
+    <h1>Deinen Charakter bearbeiten</h1>
+
+    <div class="form-group col-md-6">
+        {{ form_label(addPlayerCharacterForm.playerType) }}
+        {{ form_widget(addPlayerCharacterForm.playerType) }}
+        {{ form_errors(addPlayerCharacterForm.playerType) }}
+    </div>
 
     <h3>Basisinformationen</h3>
 
@@ -147,7 +149,7 @@
         </div>
     </div>
 
-    <a class="btn btn-secondary" role="button" href="{{ path('character_sheet') }}">Abbrechen</a>
+    <a class="btn btn-secondary" role="button" href="{{ path('all_characters') }}">Abbrechen</a>
     {{ form_label(addPlayerCharacterForm.submit) }}
     {{ form_widget(addPlayerCharacterForm.submit, {attr:{class:"btn btn-success"}}) }}
     {% if characterInfo.user == user or is_granted('ROLE_ADMIN') %}

@@ -10,6 +10,7 @@
                 <a class="nav-link" href="{{ path('add_content') }}">Notizbuch</a>
             </li>
 
+            {#
             {% if not is_granted('ROLE_ADMIN') %}
 
                 <li class="nav-item {% if app.request.attributes.get('_route') == 'character_sheet' %} active {% endif %}">
@@ -17,19 +18,12 @@
                 </li>
 
             {% endif %}
+            #}
 
-
-            <li class="nav-item {% if app.request.attributes.get('_route') == 'all_nsc' %} active {% endif %}">
-                <a class="nav-link" href="{{ path('all_nsc') }}">NSCs</a>
+            <li class="nav-item {% if app.request.attributes.get('_route') == 'all_characters' %} active {% endif %}">
+                <a class="nav-link" href="{{ path('all_characters') }}">Spieler und NSCs</a>
             </li>
 
-            {# noch anpassen#}
-            {% if is_granted('ROLE_ADMIN') %}
-                <li class="nav-item {% if app.request.attributes.get('_route') == 'character_sheet' %} active {% endif %}">
-                    <a class="nav-link" href="{{ path('character_sheet') }}">Spielerfiguren</a>
-                </li>
-
-            {% endif %}
 
         {% endif %}
 

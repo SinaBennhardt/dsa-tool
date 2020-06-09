@@ -5,7 +5,6 @@
     <h1>Schlagwörter löschen</h1>
     <br>
 
-
     {% for headword in headwords %}
         <div class="form-group col-md-8">
             <a class="btn btn-danger" role="button" href="{{ path('delete_headword_confirmation', {headwordId: headword.id}) }}">

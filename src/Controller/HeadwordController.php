@@ -5,16 +5,14 @@ namespace App\Controller;
 use App\Entity\Campaign;
 use App\Entity\Content;
 use App\Entity\Headword;
-use App\Form\AddHeadwordType;
 use App\Form\ChangeHeadwordType;
-use App\Form\DeleteHeadwordConfirmationType;
-use App\Form\DeleteHeadwordType;
+use App\Form\DeleteConfirmationType;
+use App\Form\HeadwordType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -61,19 +59,19 @@ class HeadwordController extends AbstractController
             'headwordName' => 'ASC'
         ]);
 
-        $changeHeadwordForm = $this->createForm(ChangeHeadwordType::class, [
+        $ChangeHeadwordForm = $this->createForm(ChangeHeadwordType::class, [
             'headwords' => $headwords
         ]);
-        $changeHeadwordForm->handleRequest($request);
+        $ChangeHeadwordForm->handleRequest($request);
 
-        if ($changeHeadwordForm->isSubmitted() && $changeHeadwordForm->isValid()) {
+        if ($ChangeHeadwordForm->isSubmitted() && $ChangeHeadwordForm->isValid()) {
 
             $this->entityManager->flush();
             return new RedirectResponse($this->router->generate('change_headword'));
         }
 
         return ['headwords' => $headwords,
-            "changeHeadwordForm" => $changeHeadwordForm->createView()];
+            "HeadwordForm" => $ChangeHeadwordForm->createView()];
     }
 
     /**
@@ -87,10 +85,10 @@ class HeadwordController extends AbstractController
     {
         $headword = new Headword;
 
-        $addHeadwordForm = $this->createForm(AddHeadwordType::class, $headword);
-        $addHeadwordForm->handleRequest($request);
+        $HeadwordForm = $this->createForm(HeadwordType::class, $headword);
+        $HeadwordForm->handleRequest($request);
 
-        if ($addHeadwordForm->isSubmitted() && $addHeadwordForm->isValid()) {
+        if ($HeadwordForm->isSubmitted() && $HeadwordForm->isValid()) {
             $repository = $this->entityManager->getRepository(Campaign::class);
             $campaign = $repository->find($campaignId);
 
@@ -112,7 +110,7 @@ class HeadwordController extends AbstractController
             'headwordName' => 'ASC'
         ]);
 
-        return ["addHeadwordForm" => $addHeadwordForm->createView(),
+        return ["HeadwordForm" => $HeadwordForm->createView(),
             'headwords' => $headwords];
 
     }
@@ -155,11 +153,11 @@ class HeadwordController extends AbstractController
         $repository = $this->entityManager->getRepository(Headword::class);
         $headword = $repository->find($headwordId);
 
-        $deleteHeadwordConfirmationForm = $this->createForm(DeleteHeadwordConfirmationType::class);
-        $deleteHeadwordConfirmationForm->handleRequest($request);
+        $deleteConfirmationForm = $this->createForm(DeleteConfirmationType::class);
+        $deleteConfirmationForm->handleRequest($request);
 
 
-        if ($deleteHeadwordConfirmationForm->isSubmitted() && $deleteHeadwordConfirmationForm->isValid()) {
+        if ($deleteConfirmationForm->isSubmitted() && $deleteConfirmationForm->isValid()) {
 
             $builder = $this->entityManager->createQueryBuilder();
             $builder->select('content');
@@ -186,7 +184,7 @@ class HeadwordController extends AbstractController
         }
 
         return ['headword' => $headword,
-            "deleteHeadwordConfirmationForm" => $deleteHeadwordConfirmationForm->createView()
+            "deleteConfirmationForm" => $deleteConfirmationForm->createView()
         ];
     }
 

@@ -4,27 +4,27 @@
 
     <h1>Neue Kampagne</h1>
 
-    {{ form_start(addCampaignForm) }}
+    {{ form_start(CampaignForm) }}
 
     <div class="form-group">
-        <h2>{{ form_label(addCampaignForm.title) }} </h2>
-        {{ form_widget(addCampaignForm.title, {attr:{size:"90%"}}) }}
-        {{ form_errors(addCampaignForm.title) }}
+        <h2>{{ form_label(CampaignForm.title) }} </h2>
+        {{ form_widget(CampaignForm.title, {attr:{size:"90%"}}) }}
+        {{ form_errors(CampaignForm.title) }}
     </div>
 
     <div class="form-group">
-        <h2>{{ form_label(addCampaignForm.blurb) }}</h2>
-        {{ form_widget(addCampaignForm.blurb, {attr:{rows:"10", cols:"90%",
+        <h2>{{ form_label(CampaignForm.blurb) }}</h2>
+        {{ form_widget(CampaignForm.blurb, {attr:{rows:"10", cols:"90%",
             placeholder: "Schreibe hier deine Zusammenfassung hin"}}) }}
-        {{ form_errors(addCampaignForm.blurb) }}
+        {{ form_errors(CampaignForm.blurb) }}
     </div>
 
     <div>
     <a class="btn btn-secondary" role="button" href="{{ path('campaigns') }}">Änderungen VERWERFEN</a>
-    {{ form_label(addCampaignForm.submit) }}
-    {{ form_widget(addCampaignForm.submit, {attr:{class:"btn btn-success"}}) }}
+    {{ form_label(CampaignForm.submit) }}
+    {{ form_widget(CampaignForm.submit, {attr:{class:"btn btn-success"}}) }}
     </div>
 
-    {{ form_end(addCampaignForm) }}
+    {{ form_end(CampaignForm) }}
 
 {% endblock main %}

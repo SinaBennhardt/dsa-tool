@@ -38,7 +38,7 @@ class PlayerCharacterInfo
      * @Assert\NotBlank()
      *
      */
-    private $playerType = 'Held';
+    private $playerType;
 
     /**
      * @ORM\OneToOne(targetEntity="PlayerProperties")
