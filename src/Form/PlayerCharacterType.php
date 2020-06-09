@@ -14,6 +14,15 @@ class PlayerCharacterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add("playerType", ChoiceType:: class, [
+            "required" => true,
+            "label" => "Bist du ein ...?",
+            "choices" => [
+                "Spieler" => "Held",
+                "NSC" => "NSC"
+            ]
+        ]);
+
         $builder->add("characterName", TextType:: class, [
             "required" => true,
             "label" => "Name:"

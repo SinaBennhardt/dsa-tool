@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Adventure;
 use App\Entity\Campaign;
-use App\Form\AddAdventureType;
-use App\Form\DeleteAdventureConfirmationType;
+use App\Form\AdventureType;
+use App\Form\DeleteConfirmationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -51,10 +51,10 @@ class AdventureController extends AbstractController
     public function addAdventureAction (Request $request, $campaignId) {
         $adventure = new Adventure();
 
-        $addAdventureForm = $this->createForm(AddAdventureType::class, $adventure);
-        $addAdventureForm->handleRequest($request);
+        $AdventureForm = $this->createForm(AdventureType::class, $adventure);
+        $AdventureForm->handleRequest($request);
 
-        if ($addAdventureForm->isSubmitted() && $addAdventureForm->isValid()){
+        if ($AdventureForm->isSubmitted() && $AdventureForm->isValid()){
             $user = $this->getUser();
             $adventure->setAuthor($user);
 
@@ -73,7 +73,7 @@ class AdventureController extends AbstractController
         }
 
         return [
-            'addAdventureForm' => $addAdventureForm->createView(),
+            'AdventureForm' => $AdventureForm->createView(),
             'campaignId' => $campaignId
         ];
     }
@@ -92,10 +92,10 @@ class AdventureController extends AbstractController
         $repository = $this->entityManager->getRepository(Adventure::class);
         $adventure = $repository->find($adventureId);
 
-        $changeAdventureForm = $this->createForm(AddAdventureType::class, $adventure);
-        $changeAdventureForm->handleRequest($request);
+        $AdventureForm = $this->createForm(AdventureType::class, $adventure);
+        $AdventureForm->handleRequest($request);
 
-        if ($changeAdventureForm->isSubmitted() && $changeAdventureForm->isValid()){
+        if ($AdventureForm->isSubmitted() && $AdventureForm->isValid()){
 
             $this->entityManager->persist($adventure);
             $this->entityManager->flush();
@@ -107,7 +107,7 @@ class AdventureController extends AbstractController
         }
 
         return [
-            'changeAdventureForm' => $changeAdventureForm->createView(),
+            'AdventureForm' => $AdventureForm->createView(),
             'title' => $adventure->getTitle(),
             'campaignId' => $campaignId
         ];
@@ -148,10 +148,10 @@ class AdventureController extends AbstractController
         $repository = $this->entityManager->getRepository(Adventure::class);
         $adventure = $repository->find($adventureId);
 
-        $deleteAdventureConfirmationForm = $this->createForm(DeleteAdventureConfirmationType::class);
-        $deleteAdventureConfirmationForm->handleRequest($request);
+        $deleteConfirmationForm = $this->createForm(DeleteConfirmationType::class);
+        $deleteConfirmationForm->handleRequest($request);
 
-        if ($deleteAdventureConfirmationForm->isSubmitted() && $deleteAdventureConfirmationForm->isValid()) {
+        if ($deleteConfirmationForm->isSubmitted() && $deleteConfirmationForm->isValid()) {
 
             $this->addFlash('success',
                 sprintf('Das Abenteuer "%s" wurde erfolgreich gelöscht.', $adventure->getTitle()));
@@ -164,7 +164,7 @@ class AdventureController extends AbstractController
 
         return ['adventure' => $adventure,
             'campaignId' => $campaignId,
-            "deleteAdventureConfirmationForm" => $deleteAdventureConfirmationForm->createView()
+            "deleteConfirmationForm" => $deleteConfirmationForm->createView()
         ];
     }
 

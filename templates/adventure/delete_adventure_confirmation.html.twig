@@ -7,16 +7,16 @@
     <p>Das Abenteuer wird dabei aus allen Kampagnen entfernt. Diese Aktion kann nicht rückgängig gemacht
         werden.</p>
 
-    {{ form_start(deleteAdventureConfirmationForm) }}
+    {{ form_start(deleteConfirmationForm) }}
 
     <a class="btn btn-light" role="button" href="{{ path('delete_adventure', {campaignId: campaignId}) }}">
         Zurück
     </a>
 
-    {{  form_label(deleteAdventureConfirmationForm.submit) }}
-    {{ form_widget(deleteAdventureConfirmationForm.submit, {attr: {class:"btn btn-danger"}}) }}
+    {{  form_label(deleteConfirmationForm.submit) }}
+    {{ form_widget(deleteConfirmationForm.submit, {attr: {class:"btn btn-danger"}}) }}
 
-    {{ form_end(deleteAdventureConfirmationForm) }}
+    {{ form_end(deleteConfirmationForm) }}
 
 
 {% endblock content %}

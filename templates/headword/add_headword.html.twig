@@ -4,16 +4,16 @@
 
     <h1>Schlagwörter hinzufügen</h1>
 
-    {{ form_start(addHeadwordForm) }}
+    {{ form_start(HeadwordForm) }}
     <br>
-    {{ form_widget(addHeadwordForm.headwordName, {attr: { placeholder: "Schlagwort hinzufügen"}}) }}
+    {{ form_widget(HeadwordForm.headwordName, {attr: { placeholder: "Schlagwort hinzufügen"}}) }}
 
     <br>
     <a class="btn btn-secondary" role="button" href="{{ path('home') }}">Änderungen VERWERFEN</a>
-    {{ form_label(addHeadwordForm.submit) }}
-    {{ form_widget(addHeadwordForm.submit, {attr: {class:"btn btn-success"}}) }}
+    {{ form_label(HeadwordForm.submit) }}
+    {{ form_widget(HeadwordForm.submit, {attr: {class:"btn btn-success"}}) }}
 
-    {{ form_end(addHeadwordForm) }}
+    {{ form_end(HeadwordForm) }}
 
     <br> <br>
     <h3>Bereits existierende Schlagwörter:</h3>

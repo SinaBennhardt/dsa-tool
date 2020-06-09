@@ -6,9 +6,8 @@ namespace App\Controller;
 use App\Entity\Adventure;
 use App\Entity\Campaign;
 use App\Entity\PlayerCharacterInfo;
-use App\Form\AddCampaignType;
-use App\Form\ChangeCampaignType;
-use App\Form\DeleteCampaignConfirmationType;
+use App\Form\CampaignType;
+use App\Form\DeleteConfirmationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -73,10 +72,10 @@ class CampaignController extends AbstractController
     {
         $campaign = new Campaign();
 
-        $addCampaignForm = $this->createForm(AddCampaignType::class, $campaign);
-        $addCampaignForm->handleRequest($request);
+        $CampaignForm = $this->createForm(CampaignType::class, $campaign);
+        $CampaignForm->handleRequest($request);
 
-        if ($addCampaignForm->isSubmitted() && $addCampaignForm->isValid()) {
+        if ($CampaignForm->isSubmitted() && $CampaignForm->isValid()) {
 
             $user = $this->getUser();
             $campaign->setAuthor($user);
@@ -90,7 +89,9 @@ class CampaignController extends AbstractController
             return new RedirectResponse($this->router->generate('change_campaign', ['campaignId' => $campaign->getId()]));
         }
 
-        return ["addCampaignForm" => $addCampaignForm->createView()];
+        return [
+            "CampaignForm" => $CampaignForm->createView()
+        ];
     }
 
     /**
@@ -103,7 +104,6 @@ class CampaignController extends AbstractController
      */
     public function changeCampaignAction(Request $request, $campaignId)
     {
-
         $repository = $this->entityManager->getRepository(Campaign::class);
         $campaign = $repository->find($campaignId);
 
@@ -121,10 +121,10 @@ class CampaignController extends AbstractController
            'campaign' =>$campaign
         ]);
 
-        $changeCampaignForm = $this->createForm(ChangeCampaignType::class, $campaign);
-        $changeCampaignForm->handleRequest($request);
+        $CampaignForm = $this->createForm(CampaignType::class, $campaign);
+        $CampaignForm->handleRequest($request);
 
-        if ($changeCampaignForm->isSubmitted() && $changeCampaignForm->isValid()) {
+        if ($CampaignForm->isSubmitted() && $CampaignForm->isValid()) {
 
             $this->addFlash('success',
                 sprintf('Du hast die Kampagne "%s" angepasst.', $campaign->getTitle()));
@@ -136,7 +136,7 @@ class CampaignController extends AbstractController
         }
 
         return [
-            'changeCampaignForm' => $changeCampaignForm->createView(),
+            'CampaignForm' => $CampaignForm->createView(),
             'campaign_name' => $campaign->getTitle(),
             'campaignId' => $campaign->getId(),
             'adventures' => $adventures,
@@ -195,10 +195,10 @@ class CampaignController extends AbstractController
         $repository = $this->entityManager->getRepository(Campaign::class);
         $campaign = $repository->find($campaignId);
 
-        $deleteCampaignConfirmationForm = $this->createForm(DeleteCampaignConfirmationType::class, []);
-        $deleteCampaignConfirmationForm->handleRequest($request);
+        $deleteConfirmationForm = $this->createForm(DeleteConfirmationType::class, []);
+        $deleteConfirmationForm->handleRequest($request);
 
-        if ($deleteCampaignConfirmationForm->isSubmitted() && $deleteCampaignConfirmationForm->isValid()) {
+        if ($deleteConfirmationForm->isSubmitted() && $deleteConfirmationForm->isValid()) {
 
             $repository = $this->entityManager->getRepository(Adventure::class);
             $adventureList = $repository->findBy([
@@ -219,8 +219,8 @@ class CampaignController extends AbstractController
         }
 
         return ['campaign' => $campaign,
-            'id' => $campaignId,
-            'deleteCampaignConfirmationForm' => $deleteCampaignConfirmationForm->createView()
+            'campaignId' => $campaignId,
+            'deleteConfirmationForm' => $deleteConfirmationForm->createView()
         ];
     }
 

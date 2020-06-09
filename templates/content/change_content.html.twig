@@ -4,37 +4,37 @@
 
     <h1>Inhalt ändern</h1>
 
-    {{ form_start(changeContentForm, {action: path('change_content', {contentId: content.id})}) }}
+    {{ form_start(ContentForm, {action: path('change_content', {contentId: content.id})}) }}
 
     <div class="form-group">
-        <h2>{{ form_label(changeContentForm.title) }}</h2>
-        {{ form_widget(changeContentForm.title, {attr:{size:"90%"}}) }}
-        {{ form_errors(changeContentForm.title) }}
+        <h2>{{ form_label(ContentForm.title) }}</h2>
+        {{ form_widget(ContentForm.title, {attr:{size:"90%"}}) }}
+        {{ form_errors(ContentForm.title) }}
     </div>
 
     <div class="form-group">
-        <h2>{{ form_label(changeContentForm.text) }}</h2>
-        {{ form_widget(changeContentForm.text, {attr:{rows:"10", cols:"90%"}}) }}
-        {{ form_errors(changeContentForm.text) }}
+        <h2>{{ form_label(ContentForm.text) }}</h2>
+        {{ form_widget(ContentForm.text, {attr:{rows:"10", cols:"90%"}}) }}
+        {{ form_errors(ContentForm.text) }}
     </div>
 
     <div class="form-group">
-        <h3>{{ form_label(changeContentForm.access) }}</h3>
-        {{ form_widget(changeContentForm.access) }}
-        {{ form_errors(changeContentForm.access) }}
+        <h3>{{ form_label(ContentForm.access) }}</h3>
+        {{ form_widget(ContentForm.access) }}
+        {{ form_errors(ContentForm.access) }}
     </div>
 
     <div class="form-group">
-        <h3>{{ form_label(changeContentForm.headwords) }}</h3>
-        {{ form_widget(changeContentForm.headwords)}}
-        {{ form_errors(changeContentForm.headwords) }}
+        <h3>{{ form_label(ContentForm.headwords) }}</h3>
+        {{ form_widget(ContentForm.headwords)}}
+        {{ form_errors(ContentForm.headwords) }}
         <br> <br>
     </div>
 
     <div class="form-group">
         <a class="btn btn-secondary" role="button" href="{{ path('view_content') }}">Änderungen VERWERFEN</a>
-        {{ form_label(changeContentForm.submit) }}
-        {{ form_widget(changeContentForm.submit,  {attr:{class:"btn btn-success"}}) }}
+        {{ form_label(ContentForm.submit) }}
+        {{ form_widget(ContentForm.submit,  {attr:{class:"btn btn-success"}}) }}
 
         {% if content.access == 'all' or is_granted('ROLE_ADMIN') or (content.access == 'restricted' and user == content.author) %}
         <a class="btn btn-danger" role="button"
@@ -42,6 +42,6 @@
         {% endif %}
     </div>
 
-    {{ form_end(changeContentForm) }}
+    {{ form_end(ContentForm) }}
 
 {% endblock content %}

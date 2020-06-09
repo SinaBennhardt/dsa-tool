@@ -2,11 +2,33 @@
 
 {% block content %}
 
-    <h1>Deine Helden</h1>
+    <h1>Die Spieler</h1>
 
     <div class="d-flex flex-wrap">
 
         {% for playerCharacterInfo in character %}
+
+            {% if user == playerCharacterInfo.user or is_granted('ROLE_ADMIN') %}
+                <figure class="figure">
+                    <a href="{{ path('change_character', {characterId: playerCharacterInfo.id}) }}">
+                        <img src="{{ asset("images/add_more.jpg") }}" class="rounded-lg">
+                        <figcaption class="figure-caption text-right">
+                            {{ playerCharacterInfo.characterName }}
+                        </figcaption>
+                    </a>
+                </figure>
+
+            {% endif %}
+        {% endfor %}
+
+    </div>
+
+    <h1>Die NSCs</h1>
+
+    <div class="d-flex flex-wrap">
+
+        {% for playerCharacterInfo in nsc %}
+
             {% if user == playerCharacterInfo.user or is_granted('ROLE_ADMIN') %}
                 <figure class="figure">
                     <a href="{{ path('change_character', {characterId: playerCharacterInfo.id}) }}">
@@ -25,7 +47,7 @@
     <div>
         <a class="btn btn-secondary" role="button"
            href="{{ path('create_new_character',
-               {campaignId: campaignId}) }}">Neuen Held erstellen</a>
+               {campaignId: campaignId}) }}">Neuen Charakter erstellen</a>
     </div>
 
 {% endblock content %}

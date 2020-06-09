@@ -5,19 +5,14 @@ namespace App\Controller;
 use App\Entity\Campaign;
 use App\Entity\Content;
 use App\Entity\Headword;
-use App\Entity\User;
-use App\Form\AddContentType;
-use App\Form\ChangeContentType;
-use App\Form\DeleteContentConfirmationType;
-use Doctrine\ORM\Mapping\Id;
-use phpDocumentor\Reflection\DocBlock\Tags\Author;
+use App\Form\ContentType;
+use App\Form\DeleteConfirmationType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -63,10 +58,10 @@ class ContentController extends AbstractController
             ]
         );
 
-        $addContentForm = $this->createForm(AddContentType::class, $content);
-        $addContentForm->handleRequest($request);
+        $ContentForm = $this->createForm(ContentType::class, $content);
+        $ContentForm->handleRequest($request);
 
-        if ($addContentForm->isSubmitted() && $addContentForm->isValid()) {
+        if ($ContentForm->isSubmitted() && $ContentForm->isValid()) {
 
             $user = $this->getUser();
             $content->setAuthor($user);
@@ -78,7 +73,7 @@ class ContentController extends AbstractController
             return new RedirectResponse($this->router->generate('view_content'));
         }
 
-        return ["addContentForm" => $addContentForm->createView()
+        return ["ContentForm" => $ContentForm->createView()
         ];
     }
 
@@ -151,10 +146,10 @@ class ContentController extends AbstractController
         $repository = $this->entityManager->getRepository(Content::class);
         $content = $repository->find($contentId);
 
-        $changeContentForm = $this->createForm(ChangeContentType::class, $content);
-        $changeContentForm->handleRequest($request);
+        $ContentForm = $this->createForm(ContentType::class, $content);
+        $ContentForm->handleRequest($request);
 
-        if ($changeContentForm->isSubmitted() && $changeContentForm->isValid()) {
+        if ($ContentForm->isSubmitted() && $ContentForm->isValid()) {
 
             $this->addFlash('success',
                 sprintf('Du hast den Eintrag "%s" geändert.', $content->getTitle()));
@@ -165,7 +160,7 @@ class ContentController extends AbstractController
             return new RedirectResponse($this->router->generate('view_content'));
         }
 
-        return ["changeContentForm" => $changeContentForm->createView(),
+        return ["ContentForm" => $ContentForm->createView(),
             "content" => $content,
             "contentId" => $contentId,
             'campaignId' => $campaignId
@@ -183,15 +178,15 @@ class ContentController extends AbstractController
      * @return array|RedirectResponse
      */
 
-    public function deleteContentAction(Request $request, $contentId, $campaignId)
+    public function deleteContentConfirmationAction(Request $request, $contentId, $campaignId)
     {
         $repository = $this->entityManager->getRepository(Content::class);
         $content = $repository->find($contentId);
 
-        $deleteContentConfirmationForm = $this->createForm(DeleteContentConfirmationType::class);
-        $deleteContentConfirmationForm->handleRequest($request);
+        $deleteConfirmationForm = $this->createForm(DeleteConfirmationType::class);
+        $deleteConfirmationForm->handleRequest($request);
 
-        if ($deleteContentConfirmationForm->isSubmitted() && $deleteContentConfirmationForm->isValid()) {
+        if ($deleteConfirmationForm->isSubmitted() && $deleteConfirmationForm->isValid()) {
 
             $this->addFlash('success',
                 sprintf('Du hast den Eintrag "%s" gelöscht.', $content->getTitle()));
@@ -204,7 +199,7 @@ class ContentController extends AbstractController
 
 
         return [
-            'deleteContentConfirmationForm' => $deleteContentConfirmationForm->createView(),
+            'deleteConfirmationForm' => $deleteConfirmationForm->createView(),
             'content' => $content,
             'contentId' => $contentId
         ];
