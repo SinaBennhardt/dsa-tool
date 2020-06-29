@@ -8,6 +8,7 @@ use App\Entity\Headword;
 use App\Form\ChangeHeadwordType;
 use App\Form\DeleteConfirmationType;
 use App\Form\HeadwordType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -53,11 +54,7 @@ class HeadwordController extends AbstractController
         $campaign = $repository->find($campaignId);
 
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findBy([
-            'campaign' => $campaign
-        ], [
-            'headwordName' => 'ASC'
-        ]);
+        $headwords = $repository->findHeadwordsByCampaign($campaignId);
 
         $ChangeHeadwordForm = $this->createForm(ChangeHeadwordType::class, [
             'headwords' => $headwords
@@ -100,15 +97,8 @@ class HeadwordController extends AbstractController
             return new RedirectResponse($this->router->generate('add_headword'));
         }
 
-        $repository = $this->entityManager->getRepository(Campaign::class);
-        $campaign = $repository->find($campaignId);
-
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findBy([
-            'campaign' => $campaign
-        ], [
-            'headwordName' => 'ASC'
-        ]);
+        $headwords = $repository->findHeadwordsByCampaign($campaignId);
 
         return ["HeadwordForm" => $HeadwordForm->createView(),
             'headwords' => $headwords];
@@ -125,17 +115,11 @@ class HeadwordController extends AbstractController
      */
     public function deleteHeadwordAction(Request $request, $campaignId)
     {
-        $repository = $this->entityManager->getRepository(Campaign::class);
-        $campaign = $repository->find($campaignId);
-
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findBy([
-            'campaign' => $campaign
-        ], [
-            'headwordName' => 'ASC'
-        ]);
+        $headwords = $repository->findHeadwordsByCampaign($campaignId);
 
-        return ['headwords' => $headwords
+        return [
+            'headwords' => $headwords
         ];
     }
 
@@ -198,17 +182,12 @@ class HeadwordController extends AbstractController
     {
         $campaignId = $request->attributes->get('campaignId');
 
-        $repository = $this->entityManager->getRepository(Campaign::class);
-        $campaign = $repository->find($campaignId);
-
         $repository = $this->entityManager->getRepository(Headword::class);
-        $headwords = $repository->findBy([
-            'campaign' => $campaign
-        ], [
-            'headwordName' => 'ASC'
-        ]);
+        $headwords = $repository->findHeadwordsByCampaign($campaignId);
 
-        return ['headwords' => $headwords];
+        return [
+            'headwords' => $headwords
+        ];
     }
 
 }

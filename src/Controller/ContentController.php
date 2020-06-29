@@ -73,7 +73,8 @@ class ContentController extends AbstractController
             return new RedirectResponse($this->router->generate('view_content'));
         }
 
-        return ["ContentForm" => $ContentForm->createView()
+        return [
+            "ContentForm" => $ContentForm->createView()
         ];
     }
 
