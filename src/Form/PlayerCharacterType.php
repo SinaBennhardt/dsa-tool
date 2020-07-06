@@ -96,5 +96,4 @@ class PlayerCharacterType extends AbstractType
             'label' => "Abschicken"
         ]);
     }
-
 }

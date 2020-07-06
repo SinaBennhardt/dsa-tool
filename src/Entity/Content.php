@@ -173,5 +173,4 @@ class Content
     {
         $this->campaign = $campaign;
     }
-
 }

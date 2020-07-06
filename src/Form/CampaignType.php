@@ -3,7 +3,6 @@
 
 namespace App\Form;
 
-
 use App\Entity\Campaign;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -29,7 +28,6 @@ class CampaignType extends AbstractType
         $builder->add("submit", SubmitType::class, [
             'label' => 'Abschicken'
         ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

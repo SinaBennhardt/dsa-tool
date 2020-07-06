@@ -3,7 +3,6 @@
 
 namespace App\Form;
 
-
 use App\Entity\Headword;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -49,6 +48,4 @@ class ContentType extends AbstractType
             'label' => "Abschicken"
         ]);
     }
-
-
 }

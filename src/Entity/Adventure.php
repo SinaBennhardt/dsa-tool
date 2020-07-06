@@ -131,5 +131,4 @@ class Adventure
     {
         return $this->contents;
     }
-
 }

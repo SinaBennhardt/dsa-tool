@@ -17,13 +17,13 @@ class PlayerProperties
      * @ORM\GeneratedValue()
      *
      */
-   private $id;
+    private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
      */
 
-   private $user;
+    private $user;
 
 
     /**
@@ -252,7 +252,8 @@ class PlayerProperties
     }
 
 
-    public function getLP() {
+    public function getLP()
+    {
         $KO = $this->constitution;
         $KK = $this->strength;
 
@@ -261,7 +262,8 @@ class PlayerProperties
         return $LP;
     }
 
-    public function getAsP() {
+    public function getAsP()
+    {
         $MU = $this->courage;
         $IN = $this->intuition;
         $CH = $this->charisma;
@@ -277,8 +279,8 @@ class PlayerProperties
         return $KP;
     }
 
-    public function getMR() {
-
+    public function getMR()
+    {
         $MU = $this->courage;
         $KL = $this->intelligence;
         $KO = $this->constitution;
@@ -287,5 +289,4 @@ class PlayerProperties
 
         return $MR;
     }
-
- }
+}
