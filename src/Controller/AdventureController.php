@@ -48,13 +48,14 @@ class AdventureController extends AbstractController
      * @param $campaignId
      * @return array|RedirectResponse
      */
-    public function addAdventureAction (Request $request, $campaignId) {
+    public function addAdventureAction(Request $request, $campaignId)
+    {
         $adventure = new Adventure();
 
         $AdventureForm = $this->createForm(AdventureType::class, $adventure);
         $AdventureForm->handleRequest($request);
 
-        if ($AdventureForm->isSubmitted() && $AdventureForm->isValid()){
+        if ($AdventureForm->isSubmitted() && $AdventureForm->isValid()) {
             $user = $this->getUser();
             $adventure->setAuthor($user);
 
@@ -66,8 +67,10 @@ class AdventureController extends AbstractController
             $this->entityManager->persist($adventure);
             $this->entityManager->flush();
 
-            $this->addFlash('success',
-                sprintf('Das Abenteuer "%s" wurde erfolgreich erstellt.', $adventure->getTitle()));
+            $this->addFlash(
+                'success',
+                sprintf('Das Abenteuer "%s" wurde erfolgreich erstellt.', $adventure->getTitle())
+            );
 
             return new RedirectResponse($this->router->generate('change_campaign', ['campaignId' => $campaignId]));
         }
@@ -88,20 +91,22 @@ class AdventureController extends AbstractController
      * @param $adventureId
      * @return RedirectResponse|array
      */
-    public function changeAdventureAction(Request $request, $campaignId, $adventureId) {
+    public function changeAdventureAction(Request $request, $campaignId, $adventureId)
+    {
         $repository = $this->entityManager->getRepository(Adventure::class);
         $adventure = $repository->find($adventureId);
 
         $AdventureForm = $this->createForm(AdventureType::class, $adventure);
         $AdventureForm->handleRequest($request);
 
-        if ($AdventureForm->isSubmitted() && $AdventureForm->isValid()){
-
+        if ($AdventureForm->isSubmitted() && $AdventureForm->isValid()) {
             $this->entityManager->persist($adventure);
             $this->entityManager->flush();
 
-            $this->addFlash('success',
-                sprintf('Das Abenteuer "%s" wurde angepasst.', $adventure->getTitle()));
+            $this->addFlash(
+                'success',
+                sprintf('Das Abenteuer "%s" wurde angepasst.', $adventure->getTitle())
+            );
 
             return new RedirectResponse($this->router->generate('change_campaign', ['id' => $campaignId]));
         }
@@ -152,9 +157,10 @@ class AdventureController extends AbstractController
         $deleteConfirmationForm->handleRequest($request);
 
         if ($deleteConfirmationForm->isSubmitted() && $deleteConfirmationForm->isValid()) {
-
-            $this->addFlash('success',
-                sprintf('Das Abenteuer "%s" wurde erfolgreich gelöscht.', $adventure->getTitle()));
+            $this->addFlash(
+                'success',
+                sprintf('Das Abenteuer "%s" wurde erfolgreich gelöscht.', $adventure->getTitle())
+            );
 
             $this->entityManager->remove($adventure);
             $this->entityManager->flush();
@@ -167,6 +173,4 @@ class AdventureController extends AbstractController
             "deleteConfirmationForm" => $deleteConfirmationForm->createView()
         ];
     }
-
-
 }

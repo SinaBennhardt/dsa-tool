@@ -76,7 +76,6 @@ class Headword
     public function getCampaign()
     {
         return $this->campaign;
-
     }
 
     /**

@@ -49,7 +49,6 @@ class ProfileController extends AbstractController
      */
     public function logoutAction()
     {
-
     }
 
     /**
@@ -58,7 +57,6 @@ class ProfileController extends AbstractController
      */
     public function loginAction()
     {
-
     }
 
     /**
@@ -70,7 +68,6 @@ class ProfileController extends AbstractController
 
     public function profileOptionsAction(Request $request)
     {
-
         return [];
     }
 
@@ -87,14 +84,15 @@ class ProfileController extends AbstractController
         $registerForm->handleRequest($request);
 
         if ($registerForm->isSubmitted() && $registerForm->isValid()) {
-
             $user->setRole(User::ROLE_USER);
 
             $password = $this->encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($password);
 
-            $this->addFlash('success',
-                sprintf('Du hast dich erfolgreich registriert.'));
+            $this->addFlash(
+                'success',
+                sprintf('Du hast dich erfolgreich registriert.')
+            );
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
@@ -118,16 +116,16 @@ class ProfileController extends AbstractController
         $changeNameForm->handleRequest($request);
 
         if ($changeNameForm->isSubmitted() && $changeNameForm->isValid()) {
-
             $data = $changeNameForm->getData();
             $user->setName($data["name"]);
 
-            $this->addFlash('success',
-                sprintf('Du hast deinen Namen zu "%s" geändert.', $user->getName()));
+            $this->addFlash(
+                'success',
+                sprintf('Du hast deinen Namen zu "%s" geändert.', $user->getName())
+            );
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-
         }
         return ["changeNameForm" => $changeNameForm->createView()
         ];
@@ -147,15 +145,16 @@ class ProfileController extends AbstractController
         if ($changeEmailForm->isSubmitted() && $changeEmailForm->isValid()) {
             $user = $this->getUser();
 
-            $this->addFlash('success',
-                sprintf('Du hast deine Email zu "%s" geändert.', $user->getEmail()));
+            $this->addFlash(
+                'success',
+                sprintf('Du hast deine Email zu "%s" geändert.', $user->getEmail())
+            );
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }
 
         return ["changeEmailForm" => $changeEmailForm->createView()];
-
     }
 
 
@@ -173,21 +172,21 @@ class ProfileController extends AbstractController
         $changePasswordForm->handleRequest($request);
 
         if ($changePasswordForm->isSubmitted() && $changePasswordForm->isValid()) {
-
             $data = $changePasswordForm->getData();
 
             $password = $this->encoder->encodePassword($user, $data["password"]);
             $user->setPassword($password);
             $user = $this->getUser();
 
-            $this->addFlash('success',
-                sprintf('Du hast dein Passwort geändert.'));
+            $this->addFlash(
+                'success',
+                sprintf('Du hast dein Passwort geändert.')
+            );
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }
         return ['changePasswordForm' => $changePasswordForm->createView()
         ];
-
     }
 }

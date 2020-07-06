@@ -65,7 +65,6 @@ class HeadwordController extends AbstractController
         $ChangeHeadwordForm->handleRequest($request);
 
         if ($ChangeHeadwordForm->isSubmitted() && $ChangeHeadwordForm->isValid()) {
-
             $this->entityManager->flush();
             return new RedirectResponse($this->router->generate('change_headword'));
         }
@@ -112,7 +111,6 @@ class HeadwordController extends AbstractController
 
         return ["HeadwordForm" => $HeadwordForm->createView(),
             'headwords' => $headwords];
-
     }
 
 
@@ -158,7 +156,6 @@ class HeadwordController extends AbstractController
 
 
         if ($deleteConfirmationForm->isSubmitted() && $deleteConfirmationForm->isValid()) {
-
             $builder = $this->entityManager->createQueryBuilder();
             $builder->select('content');
             $builder->from(Content::class, 'content');
@@ -175,8 +172,10 @@ class HeadwordController extends AbstractController
 
             $this->entityManager->remove($headword);
 
-            $this->addFlash('success',
-                sprintf('Du hast das Schlagwort "%s" erfolgreich gelöscht.', $headword->getHeadwordName()));
+            $this->addFlash(
+                'success',
+                sprintf('Du hast das Schlagwort "%s" erfolgreich gelöscht.', $headword->getHeadwordName())
+            );
 
             $this->entityManager->flush();
 
@@ -210,5 +209,4 @@ class HeadwordController extends AbstractController
 
         return ['headwords' => $headwords];
     }
-
 }

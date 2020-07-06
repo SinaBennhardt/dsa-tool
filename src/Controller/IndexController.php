@@ -35,10 +35,9 @@ class IndexController extends AbstractController
         $user = $this->getUser();
 
         if ($user !== null) {
+            $name = $user->getName();
 
-        $name = $user->getName();
-
-        return ['name' => $name];
+            return ['name' => $name];
         }
 
 
@@ -57,5 +56,4 @@ class IndexController extends AbstractController
         //$this->entityManager->getRepository(User::class)->findAll(); // gib alle zurück
         //$this->entityManager->getRepository(User::class)->findBy(['name' => 'David']); // gib alle mit $name === 'David' zurück
     }
-
 }

@@ -53,7 +53,8 @@ class ContentController extends AbstractController
     {
         $content = new Content();
         $repository = $this->entityManager->getRepository(Campaign::class);
-        $campaign = $repository->find( [
+        $campaign = $repository->find(
+            [
             'id' => $campaignId
             ]
         );
@@ -62,7 +63,6 @@ class ContentController extends AbstractController
         $ContentForm->handleRequest($request);
 
         if ($ContentForm->isSubmitted() && $ContentForm->isValid()) {
-
             $user = $this->getUser();
             $content->setAuthor($user);
             $content->setCampaign($campaign);
@@ -150,9 +150,10 @@ class ContentController extends AbstractController
         $ContentForm->handleRequest($request);
 
         if ($ContentForm->isSubmitted() && $ContentForm->isValid()) {
-
-            $this->addFlash('success',
-                sprintf('Du hast den Eintrag "%s" geändert.', $content->getTitle()));
+            $this->addFlash(
+                'success',
+                sprintf('Du hast den Eintrag "%s" geändert.', $content->getTitle())
+            );
 
             $this->entityManager->persist($content);
             $this->entityManager->flush();
@@ -165,7 +166,6 @@ class ContentController extends AbstractController
             "contentId" => $contentId,
             'campaignId' => $campaignId
         ];
-
     }
 
     /**
@@ -187,9 +187,10 @@ class ContentController extends AbstractController
         $deleteConfirmationForm->handleRequest($request);
 
         if ($deleteConfirmationForm->isSubmitted() && $deleteConfirmationForm->isValid()) {
-
-            $this->addFlash('success',
-                sprintf('Du hast den Eintrag "%s" gelöscht.', $content->getTitle()));
+            $this->addFlash(
+                'success',
+                sprintf('Du hast den Eintrag "%s" gelöscht.', $content->getTitle())
+            );
 
             $this->entityManager->remove($content);
             $this->entityManager->flush();
@@ -204,5 +205,4 @@ class ContentController extends AbstractController
             'contentId' => $contentId
         ];
     }
-
 }

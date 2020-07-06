@@ -3,7 +3,6 @@
 
 namespace App\Form;
 
-
 use App\Entity\Headword;
 use App\Entity\PlayerProperties;
 use Symfony\Component\Form\AbstractType;

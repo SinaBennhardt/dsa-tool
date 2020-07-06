@@ -19,7 +19,8 @@ class RouterContextListener
         $this->router = $router;
     }
 
-    public function onKernelRequest(RequestEvent $event) {
+    public function onKernelRequest(RequestEvent $event)
+    {
         if (!$event->isMasterRequest()) {
             return;
         }

@@ -98,14 +98,15 @@ class PlayerCharacterController extends AbstractController
         $addPlayerCharacterForm->handleRequest($request);
 
         if ($addPlayerCharacterForm->isSubmitted() && $addPlayerCharacterForm->isValid()) {
-
             $characterInfo->setCampaign($campaignId);
             $this->entityManager->persist($characterInfo);
             $this->entityManager->persist($characterProperties);
             $this->entityManager->flush();
 
-            $this->addFlash('success',
-                sprintf('Dein Charakter "%s" wurde erfolgreich erstellt.', $characterInfo->getCharacterName()));
+            $this->addFlash(
+                'success',
+                sprintf('Dein Charakter "%s" wurde erfolgreich erstellt.', $characterInfo->getCharacterName())
+            );
 
             return $this->redirectToRoute('character_sheet');
         }
@@ -134,9 +135,10 @@ class PlayerCharacterController extends AbstractController
         $addPlayerCharacterForm->handleRequest($request);
 
         if ($addPlayerCharacterForm->isSubmitted() && $addPlayerCharacterForm->isValid()) {
-
-            $this->addFlash('success',
-                sprintf('Dein Charakter "%s" wurde angepasst.', $characterInfo->getCharacterName()));
+            $this->addFlash(
+                'success',
+                sprintf('Dein Charakter "%s" wurde angepasst.', $characterInfo->getCharacterName())
+            );
 
             $this->entityManager->persist($characterInfo);
             $this->entityManager->flush();
@@ -168,12 +170,13 @@ class PlayerCharacterController extends AbstractController
         $deleteConfirmationForm->handleRequest($request);
 
         if ($deleteConfirmationForm->isSubmitted() && $deleteConfirmationForm->isValid()) {
-
             $repository = $this->entityManager->getRepository(PlayerProperties::class);
             $characterProperties = $repository->find($characterId);
 
-            $this->addFlash('success',
-                sprintf('Der Charakter "%s" wurde erfolgreich gelöscht.', $character->getCharacterName()));
+            $this->addFlash(
+                'success',
+                sprintf('Der Charakter "%s" wurde erfolgreich gelöscht.', $character->getCharacterName())
+            );
 
             $this->entityManager->remove($character);
             $this->entityManager->remove($characterProperties);
@@ -188,6 +191,4 @@ class PlayerCharacterController extends AbstractController
             'character' => $character
         ];
     }
-
-
 }

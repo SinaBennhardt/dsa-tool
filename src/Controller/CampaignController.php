@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-
 use App\Entity\Adventure;
 use App\Entity\Campaign;
 use App\Entity\PlayerCharacterInfo;
@@ -76,12 +75,13 @@ class CampaignController extends AbstractController
         $CampaignForm->handleRequest($request);
 
         if ($CampaignForm->isSubmitted() && $CampaignForm->isValid()) {
-
             $user = $this->getUser();
             $campaign->setAuthor($user);
 
-            $this->addFlash('success',
-                sprintf('Die Kampagne "%s" wurde erfolgreich erstellt.', $campaign->getTitle()));
+            $this->addFlash(
+                'success',
+                sprintf('Die Kampagne "%s" wurde erfolgreich erstellt.', $campaign->getTitle())
+            );
 
             $this->entityManager->persist($campaign);
             $this->entityManager->flush();
@@ -110,7 +110,8 @@ class CampaignController extends AbstractController
         $repository = $this->entityManager->getRepository(Adventure::class);
 
         /** @var Adventure[] $adventures */
-        $adventures = $repository->findBy([
+        $adventures = $repository->findBy(
+            [
                 'campaign' => $campaign
             ]
         );
@@ -125,9 +126,10 @@ class CampaignController extends AbstractController
         $CampaignForm->handleRequest($request);
 
         if ($CampaignForm->isSubmitted() && $CampaignForm->isValid()) {
-
-            $this->addFlash('success',
-                sprintf('Du hast die Kampagne "%s" angepasst.', $campaign->getTitle()));
+            $this->addFlash(
+                'success',
+                sprintf('Du hast die Kampagne "%s" angepasst.', $campaign->getTitle())
+            );
 
             $this->entityManager->persist($campaign);
             $this->entityManager->flush();
@@ -142,7 +144,6 @@ class CampaignController extends AbstractController
             'adventures' => $adventures,
             'playerCharacters' => $playerCharacters
         ];
-
     }
 
     /**
@@ -162,7 +163,8 @@ class CampaignController extends AbstractController
         $repository = $this->entityManager->getRepository(Adventure::class);
 
         /** @var Adventure[] $adventures */
-        $adventures = $repository->findBy([
+        $adventures = $repository->findBy(
+            [
                 'campaign' => $campaign
             ]
         );
@@ -199,7 +201,6 @@ class CampaignController extends AbstractController
         $deleteConfirmationForm->handleRequest($request);
 
         if ($deleteConfirmationForm->isSubmitted() && $deleteConfirmationForm->isValid()) {
-
             $repository = $this->entityManager->getRepository(Adventure::class);
             $adventureList = $repository->findBy([
                 'campaign' => $campaignId
@@ -209,8 +210,10 @@ class CampaignController extends AbstractController
                 $this->entityManager->remove($adventure);
             }
 
-            $this->addFlash('success',
-                sprintf('Du hast die Kampagne "%s" erfolgreich gelöscht.', $campaign->getTitle()));
+            $this->addFlash(
+                'success',
+                sprintf('Du hast die Kampagne "%s" erfolgreich gelöscht.', $campaign->getTitle())
+            );
 
             $this->entityManager->remove($campaign);
             $this->entityManager->flush();
@@ -236,8 +239,5 @@ class CampaignController extends AbstractController
         ]);
 
         return ['campaigns' => $campaigns];
-
-
     }
-
 }

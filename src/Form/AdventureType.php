@@ -28,7 +28,6 @@ class AdventureType extends AbstractType
         $builder->add("submit", SubmitType::class, [
             'label' => 'Abschicken'
         ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

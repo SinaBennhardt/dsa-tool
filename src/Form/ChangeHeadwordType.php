@@ -11,15 +11,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ChangeHeadwordType extends AbstractType
 {
-public function buildForm(FormBuilderInterface $builder, array $options)
-{
-    $builder->add("headwords", CollectionType::class, [
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add("headwords", CollectionType::class, [
         "entry_type" => ChangeHeadwordNameType::class,
         "label" => "Schlagwörter:"
     ]);
 
-    $builder->add("submit", SubmitType::class, [
+        $builder->add("submit", SubmitType::class, [
         'label' => "Änderung SPEICHERN"
     ]);
-}
+    }
 }
