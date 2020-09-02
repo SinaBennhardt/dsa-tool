@@ -9,12 +9,12 @@ Vagrant.configure(2) do |config|
   end
 
   # API calls
-  config.vm.network :forwarded_port, guest: 80, host: 8888
+  config.vm.network :forwarded_port, guest: 80, host: 80
 
   # mailcatcher
   config.vm.network :forwarded_port, guest: 1080, host: 1080
 
-  config.vm.network :private_network, ip: "192.168.222.85"
+  config.vm.network :private_network, ip: "192.168.42.42"
   config.vm.synced_folder "./", "/srv/share", id: 'vagrant-share', :nfs => true
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.ssh.forward_agent = true
